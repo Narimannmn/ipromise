@@ -1,0 +1,31 @@
+import type { MenuProps } from "antd";
+import {
+  AiOutlineCheckSquare,
+  AiOutlineContainer,
+  AiOutlineTeam,
+} from "react-icons/ai";
+import { privateRoutesMap } from "@/shared/navigation";
+
+type MenuItem = Required<MenuProps>["items"][number];
+
+export const sidebarItems: MenuItem[] = [
+  {
+    key: privateRoutesMap.feed,
+    label: "Feed",
+    icon: <AiOutlineContainer />,
+  },
+  {
+    key: privateRoutesMap.promises,
+    label: "Promises",
+    icon: <AiOutlineCheckSquare />,
+  },
+  {
+    key: privateRoutesMap.friends,
+    label: "Friends",
+    icon: <AiOutlineTeam />,
+  },
+];
+
+// export const collapsedSidebarItems: SidebarItem[] = sidebarItems.flatMap(
+//   (group) => (group.type === "group" ? group.children : []),
+// );
