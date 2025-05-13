@@ -1,6 +1,6 @@
 import { theme as defaultTheme, ThemeConfig } from "antd";
 
-export const HEADER_HEIGHT = 70;
+export const HEADER_HEIGHT = 48;
 export const SIDEBAR_WIDTH = 250;
 
 export const theme: ThemeConfig = {
@@ -8,9 +8,9 @@ export const theme: ThemeConfig = {
   cssVar: {
     prefix: "app-",
   },
+
   components: {
     Layout: {
-      headerPadding: 16,
       headerHeight: HEADER_HEIGHT,
       headerBg: "#ffffff",
     },
@@ -39,13 +39,25 @@ export const theme: ThemeConfig = {
     },
     Menu: {
       iconSize: 14,
-      itemHeight: 48,
+      itemHeight: 2,
+      iconMarginInlineEnd: 10,
+      itemPaddingInline: 20,
+    },
+    Avatar: {
+      containerSize: 44,
+      containerSizeLG: 54,
+      containerSizeSM: 24,
+    },
+    Card: {
+      bodyPadding: 16,
+      headerPadding: 16,
     },
   },
   token: {
     colorText: "#1a3353",
     colorPrimary: "#366ef6",
     colorInfo: "#366ef6",
-    // borderRadius: 10,
+    borderRadiusLG: 16,
+    borderRadius: 8,
   },
 };

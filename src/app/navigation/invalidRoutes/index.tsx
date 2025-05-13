@@ -6,7 +6,7 @@ export const invalidRoutes: RouteObject[] = [
     path: invalidRoutesMap.all,
     element: (
       <Navigate
-        to={publicRoutesMap.ongoing}
+        to={publicRoutesMap.login}
         replace
       />
     ),

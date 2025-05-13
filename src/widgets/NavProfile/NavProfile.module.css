@@ -1,0 +1,19 @@
+.navProfile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.avatar {
+  width: 1.875rem;
+  height: 1.875rem;
+  object-fit: contain;
+  object-position: center;
+  overflow: hidden;
+}
+
+.userName {
+  font-weight: 700;
+}

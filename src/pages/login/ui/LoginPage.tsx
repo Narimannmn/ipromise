@@ -24,14 +24,14 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   const setTokens = useAuthStore((state) => state.setTokens);
   let decodedToken = null;
-  if (tokens?.accessToken) {
-    decodedToken = jwtDecode<DecodedToken>(tokens.accessToken);
+  if (tokens?.refresh_token) {
+    decodedToken = jwtDecode<DecodedToken>(tokens.refresh_token);
   }
 
   if (decodedToken && isTokenValid(decodedToken)) {
     return (
       <Navigate
-        to={privateRoutesMap.profile}
+        to={privateRoutesMap.feed}
         replace
       />
     );
@@ -43,8 +43,8 @@ export const LoginPage = () => {
     login(credentials, {
       onSuccess(response) {
         const tokens: Tokens = {
-          accessToken: response.access_token,
-          refreshToken: response.refresh_token,
+          access_token: response.access_token,
+          refresh_token: response.refresh_token,
         };
         appSessionStorage.setTokenValid();
         setTokens(tokens);

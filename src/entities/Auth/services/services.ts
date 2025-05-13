@@ -52,7 +52,7 @@ export const register = async (credentials: RegistrationFormFields) => {
 };
 
 export const revalidateToken = async (refreshToken: Token) => {
-  return instance.post<Tokens>("auth/refresh/", {
+  return instance.post<Tokens>("auth/refresh", {
     refresh_token: refreshToken,
   });
 };

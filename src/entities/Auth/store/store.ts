@@ -14,8 +14,8 @@ import { DecodedToken, LoginResponse } from "../schemas/schemas";
 import { revalidateToken } from "../services/services";
 
 export interface Tokens {
-  accessToken: LoginResponse["access_token"];
-  refreshToken: LoginResponse["refresh_token"];
+  access_token: LoginResponse["access_token"];
+  refresh_token: LoginResponse["refresh_token"];
 }
 
 export interface AuthState {
@@ -45,11 +45,11 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         });
         appLocalStorage.setItem(
           appLocalStorageKey.accessToken,
-          tokens.accessToken,
+          tokens.access_token,
         );
         appLocalStorage.setItem(
           appLocalStorageKey.refreshToken,
-          tokens.refreshToken,
+          tokens.refresh_token,
         );
       },
       checkForSavedToken: async () => {
@@ -65,7 +65,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 
             appSessionStorage.setTokenValid();
             set((state) => {
-              state.tokens = { ...tokens, refreshToken: refreshToken };
+              state.tokens = { ...tokens, refresh_token: refreshToken };
             });
           } catch (error) {
             console.error(error);
@@ -76,8 +76,8 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         appSessionStorage.setTokenValid();
         set((state) => {
           state.tokens = {
-            accessToken,
-            refreshToken,
+            access_token: accessToken,
+            refresh_token: refreshToken,
           };
         });
       },

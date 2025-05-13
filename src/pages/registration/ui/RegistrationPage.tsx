@@ -25,14 +25,14 @@ export const RegistrationPage = () => {
   const navigate = useNavigate();
 
   let decodedToken = null;
-  if (tokens?.accessToken) {
-    decodedToken = jwtDecode<DecodedToken>(tokens.accessToken);
+  if (tokens?.access_token) {
+    decodedToken = jwtDecode<DecodedToken>(tokens.access_token);
   }
 
   if (decodedToken && isTokenValid(decodedToken)) {
     return (
       <Navigate
-        to={privateRoutesMap.profile}
+        to={privateRoutesMap.feed}
         replace
       />
     );

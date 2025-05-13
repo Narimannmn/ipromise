@@ -1,5 +1,7 @@
 export const namespaces = [
   "login",
-  "requests"
+  "requests",
+  "apiResponseStatuses",
+  "errorPage",
 ] as const;
 export type AppI18NextNamespace = (typeof namespaces)[number];

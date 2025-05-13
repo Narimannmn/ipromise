@@ -1,4 +1,6 @@
 import { Outlet, RouteObject } from "react-router-dom";
+import { FeedPageLazy } from "@/pages/feed";
+import { PromisesPageLazy } from "@/pages/promises";
 import { VacancyPageLazy } from "@/pages/vacancy";
 import { AppSuspense } from "@/shared/components/AppSuspense";
 import { ProtectedRoute } from "@/shared/components/ProtectedRoute/ProtectedRoute";
@@ -19,11 +21,11 @@ export const privateRoutes: RouteObject[] = [
     children: [
       {
         path: privateRoutesMap.feed,
-        element: <VacancyPageLazy />,
+        element: <FeedPageLazy />,
       },
       {
         path: privateRoutesMap.promises,
-        element: <VacancyPageLazy />,
+        element: <PromisesPageLazy />,
       },
       {
         path: privateRoutesMap.profile,

@@ -9,7 +9,7 @@ export const ErrorPage = () => {
   const navigate = useNavigate();
 
   const handleReload = () => {
-    navigate(privateRoutesMap.analytics);
+    navigate(privateRoutesMap.feed);
     window.location.reload();
   };
 
@@ -18,7 +18,10 @@ export const ErrorPage = () => {
       <div className={styles.container}>
         {/* <img src={unknownError} width={320} alt="Unknown error" className={styles.image} /> */}
         <h1 className={styles.title}>{t("serverError")}</h1>
-        <button className={styles.button} onClick={handleReload}>
+        <button
+          className={styles.button}
+          onClick={handleReload}
+        >
           {t("reload")}
         </button>
       </div>
