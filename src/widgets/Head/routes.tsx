@@ -15,12 +15,12 @@ export const sidebarItems: MenuItem[] = [
     icon: <AiOutlineContainer />,
   },
   {
-    key: privateRoutesMap.promises,
+    key: privateRoutesMap.promisesMy,
     label: "Promises",
     icon: <AiOutlineCheckSquare />,
   },
   {
-    key: privateRoutesMap.friends,
+    key: privateRoutesMap.friendsMy,
     label: "Friends",
     icon: <AiOutlineTeam />,
   },

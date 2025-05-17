@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "@/entities/Auth/store/store";
 import { appLocalStorageKey } from "@/shared/config/appLocalStorage/appLocalStorage";
 import { appLocalStorage } from "@/shared/utils/appLocalStorage/appLocalStorage";
-import { getUserMe } from "../services/services";
+import { User } from "../schemas/schemas";
+import { getUserMe, getUserProfileByUserName } from "../services/services";
 
 export const staleTime = 60 * 1000; // 1 minute
 
@@ -28,4 +29,20 @@ export const useGetUserMe = () => {
   });
 
   return query;
+};
+
+export const useGetProfileByUserName = (
+  username: User["username"] | undefined,
+) => {
+  return useQuery({
+    queryKey: ["useGetProfileByUserName", username || 0],
+    queryFn: () => {
+      if (!username) {
+        throw Error("missed username");
+      }
+      return getUserProfileByUserName(username);
+    },
+    staleTime,
+    enabled: !!username,
+  });
 };

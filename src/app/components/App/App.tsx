@@ -1,6 +1,6 @@
 import { StyleProvider } from "@ant-design/cssinjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ConfigProvider } from "antd";
+import { App as AppContainer, ConfigProvider } from "antd";
 import ruRU from "antd/locale/ru_RU";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
@@ -58,22 +58,24 @@ function App() {
   }, []);
 
   return (
-    <ErrorBoundary>
-      <I18nextProvider i18n={i18next}>
-        <QueryClientProvider client={queryClient}>
-          <StyleProvider layer>
-            <ConfigProvider
-              theme={theme}
-              locale={ruRU}
-            >
-              <IconContext.Provider value={{ size: "20" }}>
-                <RouterProvider router={router} />
-              </IconContext.Provider>
-            </ConfigProvider>
-          </StyleProvider>
-        </QueryClientProvider>
-      </I18nextProvider>
-    </ErrorBoundary>
+    <AppContainer>
+      <ErrorBoundary>
+        <I18nextProvider i18n={i18next}>
+          <QueryClientProvider client={queryClient}>
+            <StyleProvider layer>
+              <ConfigProvider
+                theme={theme}
+                locale={ruRU}
+              >
+                <IconContext.Provider value={{ size: "20" }}>
+                  <RouterProvider router={router} />
+                </IconContext.Provider>
+              </ConfigProvider>
+            </StyleProvider>
+          </QueryClientProvider>
+        </I18nextProvider>
+      </ErrorBoundary>
+    </AppContainer>
   );
 }
 

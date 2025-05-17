@@ -8,7 +8,13 @@ export const AppLayout = ({ children }: PropsWithChildren) => {
     <Layout style={{ minHeight: "100vh" }}>
       {/* Main Content */}
       <Head />
-      <Content style={{ background: "#F5F5F5", padding: "24px 100px" }}>
+      <Content
+        style={{
+          background: "#F5F5F5",
+          padding: "24px 100px",
+          overflow: "hidden",
+        }}
+      >
         {children}
       </Content>
     </Layout>

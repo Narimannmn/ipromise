@@ -10,12 +10,16 @@ import {
 } from "@/entities/Auth/schemas/schemas";
 import { Tokens } from "@/entities/Auth/store/store";
 import { instance } from "@/shared/api/instance";
+import { BackendCustomResponseType } from "@/shared/schemas/error/error";
 
 export const login = async (credentials: LoginFormFields) => {
   return instance
     .post<
       LoginFormFields,
-      AxiosResponse<LoginResponse, LoginResponseError>,
+      AxiosResponse<
+        BackendCustomResponseType<LoginResponse>,
+        LoginResponseError
+      >,
       LoginFormFields
     >("auth/login", credentials, {
       validateStatus(status) {
@@ -23,7 +27,7 @@ export const login = async (credentials: LoginFormFields) => {
       },
     })
     .then((response) => {
-      const result = LoginResponseSchema.safeParse(response.data);
+      const result = LoginResponseSchema.safeParse(response.data.data);
       if (!result.success) {
         throw new Error("Validation error");
       }
@@ -35,7 +39,10 @@ export const register = async (credentials: RegistrationFormFields) => {
   return instance
     .post<
       RegistrationFormFields,
-      AxiosResponse<LoginResponseError, LoginResponseError>,
+      AxiosResponse<
+        BackendCustomResponseType<LoginResponseError>,
+        LoginResponseError
+      >,
       RegistrationFormFields
     >("auth/signup", credentials, {
       validateStatus(status) {
@@ -43,7 +50,7 @@ export const register = async (credentials: RegistrationFormFields) => {
       },
     })
     .then((response) => {
-      const result = RegisterResponseSchema.safeParse(response.data);
+      const result = RegisterResponseSchema.safeParse(response.data.data);
       if (!result.success) {
         throw new Error("Validation error");
       }

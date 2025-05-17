@@ -1,7 +1,8 @@
 import { Outlet, RouteObject } from "react-router-dom";
 import { FeedPageLazy } from "@/pages/feed";
+import { FriendsPageLazy } from "@/pages/friends";
+import { ProfilePageLazy } from "@/pages/profile";
 import { PromisesPageLazy } from "@/pages/promises";
-import { VacancyPageLazy } from "@/pages/vacancy";
 import { AppSuspense } from "@/shared/components/AppSuspense";
 import { ProtectedRoute } from "@/shared/components/ProtectedRoute/ProtectedRoute";
 import { AppLayout } from "@/shared/layouts/AppLayout/AppLayout";
@@ -29,11 +30,23 @@ export const privateRoutes: RouteObject[] = [
       },
       {
         path: privateRoutesMap.profile,
-        element: <VacancyPageLazy />,
+        element: <ProfilePageLazy />,
       },
       {
         path: privateRoutesMap.friends,
-        element: <VacancyPageLazy />,
+        element: <FriendsPageLazy />,
+      },
+      {
+        path: privateRoutesMap.profileMy,
+        element: <ProfilePageLazy />,
+      },
+      {
+        path: privateRoutesMap.promisesMy,
+        element: <PromisesPageLazy />,
+      },
+      {
+        path: privateRoutesMap.friendsMy,
+        element: <FriendsPageLazy />,
       },
     ],
   },

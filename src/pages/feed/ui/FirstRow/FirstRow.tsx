@@ -7,7 +7,7 @@ import { UserAvatar } from "../UserAvatar/UserAvatar";
 
 export const FirstRow = () => {
   const user = useAuthStore((state) => state.user);
-  const { data: achievements = [], isPending: achievementsPending } =
+  const { data: achievements = [], isLoading: achievementsLoading } =
     useGetBadgesByUsername(user?.username);
 
   return (
@@ -16,13 +16,15 @@ export const FirstRow = () => {
       gap={16}
     >
       <ConfigProvider theme={ProfileAvatarCardTheme}>
-        <Card title={<UserAvatar user={user} />}>
-          {achievementsPending && (
+        <Card title={<UserAvatar user={user || null} />}>
+          {achievementsLoading && (
             <div className='flex justify-center'>
               <Spin size='default' />
             </div>
           )}
-          {achievements && <BadgesBlock badges={achievements} />}
+          {achievements && !achievementsLoading && (
+            <BadgesBlock badges={achievements} />
+          )}
         </Card>
       </ConfigProvider>
     </Flex>

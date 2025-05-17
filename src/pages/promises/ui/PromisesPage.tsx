@@ -9,7 +9,7 @@ import {
   Typography,
 } from "antd";
 import { useEffect } from "react";
-import { AiOutlinePlusCircle } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlinePlusCircle } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthStore } from "@/entities/Auth/store/store";
 import { useGetPromisesByUsername } from "@/entities/Promises/hooks/hooks";
@@ -17,19 +17,21 @@ import { privateRoutesMap } from "@/shared/navigation";
 import { PromiseCrudFormTheme } from "../data/data";
 import { usePromisePageStore } from "../stores/store";
 import { CreatePromiseModal } from "./CreatePromiseModal/CreatePromiseModal";
+import { EditPromiseModal } from "./EditPromiseModal/EditPromiseModal";
 
 export const PromisesPage = () => {
-  const { user } = useAuthStore();
   const { username } = useParams<{ username: string }>();
+  const { user } = useAuthStore();
+  const selectedUserName = username || user?.username;
+
   const navigate = useNavigate();
-  const { setIsCreateModal } = usePromisePageStore();
+  const { setIsCreateModal, setSelectPromise, setIsEditModal } =
+    usePromisePageStore();
   const {
     data: promises,
     isLoading,
     error,
-  } = useGetPromisesByUsername(
-    username == ":username" ? user?.username : username,
-  );
+  } = useGetPromisesByUsername(selectedUserName);
 
   useEffect(() => {
     if (error) {
@@ -47,41 +49,54 @@ export const PromisesPage = () => {
           <div>
             <Typography.Title level={4}>Promises</Typography.Title>
           </div>
-          {user?.username == username && (
-            <Button
-              type='primary'
-              icon={<AiOutlinePlusCircle size={14} />}
-              onClick={() => setIsCreateModal(true)}
-            >
-              Create new promise
-            </Button>
-          )}
+          <Button
+            type='primary'
+            icon={<AiOutlinePlusCircle size={14} />}
+            onClick={() => setIsCreateModal(true)}
+          >
+            Create new promise
+          </Button>
         </div>
-        <div className='flex gap-4'>
-          {promises?.length == 0 && <Empty />}
+        <div
+          className='flex flex-wrap'
+          style={{ gap: 16 }}
+        >
+          {promises?.length === 0 && <Empty />}
           {isLoading && (
-            <div className='flex justify-center'>
+            <div className='flex justify-center w-full'>
               <Spin size='default' />
             </div>
           )}
           {promises?.map((promise) => {
-            const description = "This is a description.";
-
-            const steps = [
-              { title: "Finished", description },
-              {
-                title: "In Progress",
-                description,
-              },
-              {
-                title: "Waiting",
-                description,
-              },
-            ];
+            const steps = promise?.microtasks
+              ?.sort((a, b) => a.order - b.order)
+              .map((step) => ({
+                title: step.title,
+                description: `Made ${step.posts_count} post out of ${step.steps_planned}`,
+              }));
+            if (!promise) return null;
             return (
               <Card
-                title={promise.Title}
-                key={promise.ID}
+                title={promise.title}
+                extra={
+                  <AiOutlineEdit
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      if (!promise) return;
+                      setSelectPromise(promise);
+                      setIsEditModal(true);
+                    }}
+                  />
+                }
+                key={promise.id}
+                style={{
+                  flex: "0 0 calc((100% / 4) - 12px)",
+                  height: 350,
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                }}
+                bodyStyle={{ flex: 1, overflowY: "auto" }}
               >
                 <Steps
                   direction='vertical'
@@ -95,6 +110,7 @@ export const PromisesPage = () => {
       </div>
       <ConfigProvider theme={PromiseCrudFormTheme}>
         <CreatePromiseModal />
+        <EditPromiseModal />
       </ConfigProvider>
     </Card>
   );

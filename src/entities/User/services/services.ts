@@ -22,3 +22,21 @@ export const getUserMe = async () => {
       return result.data.data;
     });
 };
+
+export const getUserProfileByUserName = async (username: User["username"]) => {
+  return instance
+    .get<User>(`profile/${username}`, {
+      headers: {
+        Authorization: `Bearer ${appLocalStorage.getItem(appLocalStorageKey.accessToken)}`,
+      },
+    })
+    .then((response) => {
+      const result = BackendCustomResponseSchema(UserSchema).safeParse(
+        response.data,
+      );
+      if (!result.success) {
+        throw new Error(t("invalidType", { ns: "requests" }));
+      }
+      return result.data.data;
+    });
+};

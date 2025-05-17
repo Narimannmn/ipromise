@@ -2,33 +2,26 @@ import { z } from "zod";
 import { IDSchema } from "@/shared/schemas";
 import { BackendCustomResponseType } from "@/shared/schemas/error/error";
 
-const MicroTaskSchema = z.object({
-  ID: IDSchema,
-  PromiseID: IDSchema,
-  Title: z.string().max(255),
-  Description: z.string().optional(),
-  StepsPlanned: z.number().int().nonnegative().default(0),
-  Status: z.enum(["in_progress", "completed"]),
-  Order: z.number().int().nonnegative(),
-  CreatedAt: z.string().datetime(),
-  UpdatedAt: z.string().datetime(),
-  DeletedAt: z.string().nullable().optional(),
+export const MicroTaskSchema = z.object({
+  id: IDSchema,
+  title: z.string().max(255),
+  steps_planned: z.number(),
+  status: z.enum(["in_progress", "completed", ""]),
+  order: z.number().int().nonnegative(),
+  posts_count: z.number(),
+  completion_ratio: z.number(),
 });
 
 export type MicroTask = z.infer<typeof MicroTaskSchema>;
 
 export const IPromiseSchema = z.object({
-  ID: IDSchema,
-  UserID: IDSchema,
-  Title: z.string(),
-  Description: z.string(),
-  Deadline: z.string().datetime(),
-  IsPrivate: z.boolean(),
-  Status: z.enum(["in_progress", "completed"]),
-  CreatedAt: z.string().datetime(),
-  UpdatedAt: z.string().datetime(),
-  DeletedAt: z.string().nullable(),
-  microtasks: z.array(MicroTaskSchema),
+  id: IDSchema,
+  title: z.string(),
+  description: z.string(),
+  deadline: z.coerce.date(),
+  is_private: z.boolean(),
+  status: z.enum(["in_progress", "completed", ""]),
+  microtasks: z.array(MicroTaskSchema).nullable(),
 });
 
 export type IPromise = z.infer<typeof IPromiseSchema>;
@@ -63,3 +56,17 @@ export type MicrotaskCreate = z.infer<typeof MicrotaskCreateSchema>;
 export type PromiseCreateResponse = BackendCustomResponseType<{
   message: string;
 }>;
+
+export const MicroTaskUpdateSchema = z.object({
+  status: z.string(),
+  title: z.string(),
+});
+
+export type MicroTaskUpdate = z.infer<typeof MicroTaskUpdateSchema>;
+
+export const PromiseUpdateSchema = z.object({
+  deadline: z.string(),
+  description: z.string(),
+  title: z.string(),
+});
+export type PromiseUpdate = z.infer<typeof PromiseUpdateSchema>;

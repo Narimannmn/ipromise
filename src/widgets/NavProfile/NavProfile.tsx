@@ -1,10 +1,11 @@
 import { Avatar, Dropdown, notification, Skeleton } from "antd";
+import { AiOutlineUser } from "react-icons/ai";
 import { FaRegUserCircle } from "react-icons/fa";
 import { LiaSignOutAltSolid } from "react-icons/lia";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/entities/Auth/store/store";
-import { useGetUserMe } from "@/entities/User/hooks/useGetUserMe";
-import { publicRoutesMap } from "@/shared/navigation";
+import { useGetUserMe } from "@/entities/User/hooks/hooks";
+import { privateRoutesMap, publicRoutesMap } from "@/shared/navigation";
 import styles from "./NavProfile.module.css";
 
 export const NavProfile = () => {
@@ -40,6 +41,14 @@ export const NavProfile = () => {
       placement='bottomRight'
       menu={{
         items: [
+          {
+            key: "profile",
+            icon: <AiOutlineUser />,
+            label: "My Profile",
+            onClick: () => {
+              navigate(privateRoutesMap.profileMy);
+            },
+          },
           {
             key: "Sign Out",
             icon: <LiaSignOutAltSolid />,
