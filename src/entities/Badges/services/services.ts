@@ -17,7 +17,7 @@ export const getBagesByUserName = async (username: User["username"]) => {
     })
     .then((response) => {
       const result = BackendCustomResponseSchema(
-        z.array(BadgeSchema),
+        z.array(BadgeSchema).nullable(),
       ).safeParse(response.data);
       if (!result.success) {
         throw new Error(t("invalidType", { ns: "requests" }));

@@ -1,5 +1,12 @@
 import { z, ZodType } from "zod";
 
+export const AttachmentSchema = z.object({
+  file_type: z.string(),
+  file_url: z.string(),
+  id: z.string(),
+});
+export type Attachment = z.infer<typeof AttachmentSchema>;
+
 export type Post = {
   id: string;
   content: string;
@@ -14,8 +21,9 @@ export type Post = {
   replies: Post[] | null;
   created_at: string;
   avatar_url?: string;
-  attachments?: string[];
-  // is_private: boolean;
+  attachments?: Attachment[];
+  is_private: boolean;
+  is_liked_by_me: boolean;
 };
 
 export const PostSchema: ZodType<Post> = z.lazy(() =>
@@ -33,8 +41,9 @@ export const PostSchema: ZodType<Post> = z.lazy(() =>
     replies: z.union([z.array(PostSchema), z.null()]),
     created_at: z.string().datetime(),
     avatar_url: z.string().optional(),
-    attachments: z.array(z.string()).optional(),
-    // is_private: z.boolean(),
+    attachments: z.array(AttachmentSchema).optional(),
+    is_private: z.boolean(),
+    is_liked_by_me: z.boolean(),
   }),
 );
 

@@ -24,7 +24,12 @@ export const Head = () => {
         align='middle'
         justify='space-between'
       >
-        <h1 className='text-[#1890FF] text-sm font-bold'>IPromise</h1>
+        <h1
+          className='text-[#1890FF] text-sm font-bold cursor-pointer'
+          onClick={() => navigate("/")}
+        >
+          IPromise
+        </h1>
 
         <IconContext.Provider value={{ size: "16" }}>
           <Menu

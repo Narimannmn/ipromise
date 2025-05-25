@@ -12,6 +12,8 @@ import {
 import {
   MicrotaskCreate,
   MicroTaskUpdate,
+  PromiseCreate,
+  PromiseCreateResponse,
   PromiseUpdate,
 } from "../shemas/shemas";
 
@@ -31,9 +33,9 @@ export const useGetPromisesByUsername = (
 };
 
 export const usePostPromise = () => {
-  return useMutation({
+  return useMutation<PromiseCreateResponse, string, PromiseCreate>({
     mutationKey: ["usePostPromise"],
-    mutationFn: createPromise,
+    mutationFn: async (data) => createPromise(data),
   });
 };
 

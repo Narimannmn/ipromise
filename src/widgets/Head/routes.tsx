@@ -11,7 +11,14 @@ type MenuItem = Required<MenuProps>["items"][number];
 export const sidebarItems: MenuItem[] = [
   {
     key: privateRoutesMap.feed,
-    label: "Feed",
+    label: (
+      <span
+        className='joyride-feed'
+        id='navbar-feed'
+      >
+        Feed
+      </span>
+    ),
     icon: <AiOutlineContainer />,
   },
   {

@@ -43,6 +43,7 @@ export const FriendsPage = () => {
         <Tabs
           defaultActiveKey='1'
           items={tabItems}
+          id='navbar-friends'
         />
       </div>
       <div className='flex-1 w-1/4'>

@@ -15,6 +15,7 @@ export const SecondRow = () => {
       gap={16}
     >
       {!username && <CreatePostSection />}
+
       <PostsFeed posts={posts || null} />
     </Flex>
   );

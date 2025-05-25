@@ -6,6 +6,7 @@ export const ThirdRow = () => {
     <Flex
       vertical
       gap={16}
+      className='max-w-[300px]'
     >
       <NotificationsBlock />
     </Flex>

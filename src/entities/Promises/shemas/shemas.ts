@@ -6,7 +6,7 @@ export const MicroTaskSchema = z.object({
   id: IDSchema,
   title: z.string().max(255),
   steps_planned: z.number(),
-  status: z.enum(["in_progress", "completed", ""]),
+  status: z.string(),
   order: z.number().int().nonnegative(),
   posts_count: z.number(),
   completion_ratio: z.number(),
@@ -20,7 +20,7 @@ export const IPromiseSchema = z.object({
   description: z.string(),
   deadline: z.coerce.date(),
   is_private: z.boolean(),
-  status: z.enum(["in_progress", "completed", ""]),
+  status: z.string(),
   microtasks: z.array(MicroTaskSchema).nullable(),
 });
 
@@ -56,6 +56,11 @@ export type MicrotaskCreate = z.infer<typeof MicrotaskCreateSchema>;
 export type PromiseCreateResponse = BackendCustomResponseType<{
   message: string;
 }>;
+export type PromiseCreateErrorResponse = {
+  code: number;
+  message: string;
+  status: string;
+};
 
 export const MicroTaskUpdateSchema = z.object({
   status: z.string(),

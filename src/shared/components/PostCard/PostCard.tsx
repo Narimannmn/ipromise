@@ -1,46 +1,50 @@
-import { ConfigProvider, Typography } from "antd";
-import { AiOutlineComment, AiOutlineLike } from "react-icons/ai";
+import { ConfigProvider, InputRef } from "antd";
+import { useRef, useState } from "react";
 import { Post } from "@/entities/Posts/schemas/schemas";
 import { theme } from "./data/data";
+import { PostBody } from "./ui/PostBody/PostBody";
+import { PostFooter } from "./ui/PostFooter/PostFooter";
+import { PostReplies } from "./ui/PostReplies/PostReplies";
 import { PostTitle } from "./ui/PostTitle/PostTitle";
 
 export interface PostCardProps {
   post: Post;
 }
+
 export const PostCard = ({ post }: PostCardProps) => {
+  const [shownPost, setShownPost] = useState<Post>(post);
+  const [replyingToId, setReplyingToId] = useState<string>(post.id); // allow replying to post too
+  const [isFooterShow, setIsFooterShow] = useState<boolean>(true);
+  const replyRef = useRef<InputRef>(null);
+
+  const scrollToReply = () => {
+    replyRef.current?.input?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+    replyRef.current?.focus();
+    setReplyingToId(post.id);
+    setIsFooterShow(true);
+  };
+
   return (
     <ConfigProvider theme={theme}>
-      <div>
-        <div className='rounded-2xl border border-[#d9d9d9] bg-white'>
-          <div className='p-4 border-b border-[#d9d9d9]'>
-            <PostTitle post={post} />
-          </div>
-          <div className='flex flex-col gap-2 p-4'>
-            <Typography.Text>{post.content}</Typography.Text>
-            {post.attachments && post.attachments.length > 0 && (
-              <div className='flex gap-2'>
-                {post.attachments.map((img) => (
-                  <img
-                    className='max-h-[284px]'
-                    key={img}
-                    src={img}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-          <div className='px-4 py-3 flex gap-2'>
-            <div className='px-3 py-2 flex items-center gap-1 cursor-pointer'>
-              <div className='flex gap'>{post.likes}</div>
-              <AiOutlineLike size={16} />
-            </div>
-            <div className='px-3 py-2 flex items-center gap-1 cursor-pointer'>
-              {post.comments}
-              <AiOutlineComment size={16} />
-            </div>
-            ,
-          </div>
-        </div>
+      <div className='rounded-2xl border border-[#d9d9d9] bg-white'>
+        <PostTitle post={shownPost} />
+        <PostBody post={shownPost} />
+        <PostFooter
+          post={shownPost}
+          onCommentClick={scrollToReply}
+        />
+        {isFooterShow && (
+          <PostReplies
+            post={shownPost}
+            setShownPost={setShownPost}
+            replyingToId={replyingToId}
+            setReplyingToId={setReplyingToId}
+            replyRef={replyRef}
+          />
+        )}
       </div>
     </ConfigProvider>
   );

@@ -29,7 +29,7 @@ export const ProfilePage = () => {
     >
       <div style={{ flex: 1 }}>
         <FirstRow
-          achievements={achievements}
+          achievements={achievements || null}
           isLoading={achievementsLoading}
           user={profile}
         />

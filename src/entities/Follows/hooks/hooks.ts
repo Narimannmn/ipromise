@@ -7,6 +7,7 @@ import {
   getIncomingFollowRequests,
   getRecommendedFriends,
   getSentFollowRequests,
+  removeFollowRequest,
   sendFollowRequest,
   unfollowUser,
 } from "../services/services";
@@ -91,7 +92,14 @@ export const useAcceptFollowRequest = () => {
       queryClient.invalidateQueries({
         queryKey: ["useGetIncomingFollowRequests"],
       });
-      queryClient.invalidateQueries({ queryKey: ["useGetFriends"] });
+      queryClient.invalidateQueries({
+        queryKey: ["useGetFriends"],
+        exact: true,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["useGetIncomingFollowRequests"],
+        exact: true,
+      });
     },
   });
 };
@@ -105,6 +113,22 @@ export const useDeclineFollowRequest = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["useGetIncomingFollowRequests"],
+      });
+    },
+  });
+};
+
+export const useRemoveFollowRequest = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (username: User["username"]) => removeFollowRequest(username),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["useGetSentFollowRequests"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["useGetRecommendedFriends"],
       });
     },
   });

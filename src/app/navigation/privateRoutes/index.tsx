@@ -3,6 +3,7 @@ import { FeedPageLazy } from "@/pages/feed";
 import { FriendsPageLazy } from "@/pages/friends";
 import { ProfilePageLazy } from "@/pages/profile";
 import { PromisesPageLazy } from "@/pages/promises";
+import { JoyrideApp } from "@/widgets/JoyrideApp/JoyrideApp";
 import { AppSuspense } from "@/shared/components/AppSuspense";
 import { ProtectedRoute } from "@/shared/components/ProtectedRoute/ProtectedRoute";
 import { AppLayout } from "@/shared/layouts/AppLayout/AppLayout";
@@ -12,6 +13,7 @@ export const privateRoutes: RouteObject[] = [
   {
     element: (
       <ProtectedRoute>
+        <JoyrideApp />
         <AppLayout>
           <AppSuspense>
             <Outlet />

@@ -50,9 +50,9 @@ export const LoginPage = () => {
         setTokens(tokens);
         navigate(privateRoutesMap.feed);
       },
-      onError(error) {
+      onError() {
         notification.error({
-          message: error.message,
+          message: "Wrong password or username",
         });
       },
     });

@@ -77,6 +77,10 @@ export const declineFollowRequest = async (username: User["username"]) => {
   return instance.post(`/follow/${username}/decline`, {}, authHeader);
 };
 
+export const removeFollowRequest = async (username: User["username"]) => {
+  return instance.delete(`/follow/requests/${username}/cancel`, authHeader);
+};
+
 // GET /friends/{username}
 export const getFriends = async (username: User["username"]) => {
   return instance.get(`/friends/${username}`, authHeader).then((response) => {

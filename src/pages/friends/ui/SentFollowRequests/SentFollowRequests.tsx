@@ -1,8 +1,21 @@
-import { Avatar, Flex, Typography } from "antd";
-import { useGetSentFollowRequests } from "@/entities/Follows/hooks/hooks";
+import { Avatar, Flex, notification, Typography } from "antd";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+import {
+  useGetSentFollowRequests,
+  useRemoveFollowRequest,
+} from "@/entities/Follows/hooks/hooks";
 
 export const SentFollowRequests = () => {
+  const navigate = useNavigate();
+
   const { data: sentFollowRequests } = useGetSentFollowRequests();
+  const { mutate } = useRemoveFollowRequest();
+  const declineFriendShip = (username: string) => {
+    mutate(username, {
+      onSuccess: () => notification.error({ message: "request declined" }),
+    });
+  };
   if (!sentFollowRequests) return null;
   return (
     <div>
@@ -32,7 +45,10 @@ export const SentFollowRequests = () => {
               >
                 <div>
                   <Typography.Text className='text-black'>
-                    <strong style={{ cursor: "pointer" }}>
+                    <strong
+                      className='cursor-pointer hover:underline'
+                      onClick={() => navigate(`/profile/${friend.username}`)}
+                    >
                       {friend.username}
                     </strong>
                   </Typography.Text>
@@ -44,6 +60,12 @@ export const SentFollowRequests = () => {
                 </div>
               </Flex>
             </Flex>
+            <AiOutlineCloseCircle
+              size={28}
+              color='red'
+              className='cursor-pointer'
+              onClick={() => declineFriendShip(friend.username)}
+            />
           </div>
         ))}
       </div>

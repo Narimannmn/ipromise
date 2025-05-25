@@ -53,6 +53,7 @@ export const PromisesPage = () => {
             type='primary'
             icon={<AiOutlinePlusCircle size={14} />}
             onClick={() => setIsCreateModal(true)}
+            id='create-promise-button'
           >
             Create new promise
           </Button>
@@ -60,8 +61,13 @@ export const PromisesPage = () => {
         <div
           className='flex flex-wrap'
           style={{ gap: 16 }}
+          id='progress-bar'
         >
-          {promises?.length === 0 && <Empty />}
+          {(promises == null || promises.length === 0) && (
+            <div className='flex justify-center w-full'>
+              <Empty />
+            </div>
+          )}
           {isLoading && (
             <div className='flex justify-center w-full'>
               <Spin size='default' />

@@ -10,6 +10,7 @@ export const CreatePostSection = () => {
         type='primary'
         className='w-full'
         onClick={() => setIsCreatePostModalOpen(true)}
+        id='create-post-button'
       >
         Write new post
       </Button>

@@ -12,6 +12,9 @@ export const theme: ThemeConfig = {
       headerPadding: 16,
       headerHeight: 78,
     },
+    Statistic: {
+      contentFontSize: 18,
+    },
   },
   token: {
     colorText: "#1a3353",

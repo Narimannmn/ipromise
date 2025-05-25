@@ -1,3 +1,4 @@
+import axios from "axios";
 import { t } from "i18next";
 import { z } from "zod";
 import { User } from "@/entities/User/schemas/schemas";
@@ -33,12 +34,43 @@ export const getPromisesByUserName = async (username: User["username"]) => {
       return result.data.data;
     });
 };
-export const createPromise = async (promise: PromiseCreate) => {
-  return instance.post<PromiseCreateResponse>("promises/full", promise, {
-    headers: {
-      Authorization: `Bearer ${appLocalStorage.getItem(appLocalStorageKey.accessToken)}`,
-    },
-  });
+
+export const createPromise = async (
+  promise: PromiseCreate,
+): Promise<PromiseCreateResponse> => {
+  try {
+    const res = await instance.post<PromiseCreateResponse>(
+      "promises/full",
+      promise,
+      {
+        headers: {
+          Authorization: `Bearer ${appLocalStorage.getItem(appLocalStorageKey.accessToken)}`,
+        },
+      },
+    );
+    return res.data;
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      const errData = error.response?.data;
+
+      if (
+        errData &&
+        typeof errData === "object" &&
+        "code" in errData &&
+        "status" in errData &&
+        "message" in errData
+      ) {
+        throw errData.message as string;
+      }
+      throw new Error("Unexpected Axios error response");
+    }
+
+    if (error instanceof Error) {
+      throw error;
+    }
+
+    throw new Error("Unknown error occurred");
+  }
 };
 
 export const deleteMicroTask = async (id: ID) => {

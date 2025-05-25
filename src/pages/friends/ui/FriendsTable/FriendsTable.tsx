@@ -49,7 +49,10 @@ export const FriendsTable = ({ selectedUserName }: FriendsTableProps) => {
               >
                 <div>
                   <Typography.Text className='text-black'>
-                    <strong style={{ cursor: "pointer" }}>
+                    <strong
+                      className='cursor-pointer hover:underline'
+                      onClick={() => navigate(`/profile/${friend.username}`)}
+                    >
                       {friend.username}
                     </strong>
                   </Typography.Text>

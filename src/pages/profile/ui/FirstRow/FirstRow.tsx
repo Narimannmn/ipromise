@@ -6,7 +6,7 @@ import { BadgesBlock } from "../BadgesBlock/BadgesBlock";
 import { UserAvatar } from "../UserAvatar/UserAvatar";
 
 export interface FirstRowProps {
-  achievements: Badge[];
+  achievements: Badge[] | null;
   isLoading: boolean;
   user?: User;
 }
@@ -15,6 +15,7 @@ export const FirstRow = ({ achievements, isLoading, user }: FirstRowProps) => {
     <Flex
       vertical
       gap={16}
+      className='max-w-[300px]'
     >
       <ConfigProvider theme={ProfileAvatarCardTheme}>
         <Card title={<UserAvatar user={user || null} />}>

@@ -1,13 +1,41 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { User } from "@/entities/User/schemas/schemas";
+import { ID } from "@/shared/schemas";
 import { CreatePostRequest } from "../schemas/schemas";
-import { createPost, getFeed, getPostsByUserName } from "../services/services";
+import {
+  createComment,
+  createCommentProps,
+  createPost,
+  getFeed,
+  getPostsByUserName,
+  LikePost,
+  UnLikePost,
+} from "../services/services";
 
 export const useCreatePost = () => {
   return useMutation({
     mutationFn: (data: CreatePostRequest) => createPost(data),
   });
 };
+
+export const useCreateComment = () => {
+  return useMutation({
+    mutationFn: (data: createCommentProps) => createComment(data),
+  });
+};
+
+export const useLikePost = () => {
+  return useMutation({
+    mutationFn: (id: ID) => LikePost(id),
+  });
+};
+
+export const useUnlikePost = () => {
+  return useMutation({
+    mutationFn: (id: ID) => UnLikePost(id),
+  });
+};
+
 export const useGetPostsByUsername = (
   username: User["username"] | undefined,
 ) => {

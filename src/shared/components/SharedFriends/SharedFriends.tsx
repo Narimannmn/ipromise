@@ -8,6 +8,7 @@ import {
   Typography,
 } from "antd";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 import {
   useGetRecommendedFriends,
   useSendFollowRequest,
@@ -15,6 +16,7 @@ import {
 
 export const SharedFriends = () => {
   const { data, isLoading } = useGetRecommendedFriends();
+  const navigate = useNavigate();
   const { mutate } = useSendFollowRequest();
   const sendRequest = (username: string) => {
     mutate(username, {
@@ -23,8 +25,8 @@ export const SharedFriends = () => {
   };
 
   return (
-    <Card className='min-w-[296px]'>
-      <div className='flex flex-col gap-2'>
+    <Card id='friend-suggestions'>
+      <div className='flex flex-col gap-2 overflow-hidden'>
         <div>
           <Typography.Text strong>You may know</Typography.Text>
         </div>
@@ -57,13 +59,20 @@ export const SharedFriends = () => {
                 >
                   <div>
                     <Typography.Text className='text-black'>
-                      <strong style={{ cursor: "pointer" }}>
+                      <strong
+                        className='cursor-pointer hover:underline'
+                        onClick={() => navigate(`/profile/${friend.username}`)}
+                      >
                         {friend.username}
                       </strong>
                     </Typography.Text>
                   </div>
-                  <div>
-                    <Typography.Text>
+                  <div className='max-w-[180px] overflow-hidden'>
+                    <Typography.Text
+                      ellipsis={{
+                        symbol: "more",
+                      }}
+                    >
                       {friend.bio || "This is bio"}
                     </Typography.Text>
                   </div>

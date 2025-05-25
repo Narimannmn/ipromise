@@ -1,6 +1,5 @@
 import { Modal, notification, Spin, Typography } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { z } from "zod";
 import { usePostPromise } from "@/entities/Promises/hooks/hooks";
 import {
   PromiseCreate,
@@ -18,32 +17,35 @@ export const CreatePromiseModal = () => {
 
   const { mutate, isPending } = usePostPromise();
   const onFinish = (values: PromiseCreateFormFields): void => {
-    try {
-      const transformed: PromiseCreate = {
-        ...values,
-        Deadline: values.Deadline.toISOString(),
-        postNumber: values.postNumber || 1,
-        Microtasks: values.Microtasks.map((task, index) => ({
-          Title: task.Title,
-          Order: index + 1,
-        })),
-      };
+    const transformed: PromiseCreate = {
+      ...values,
+      Deadline: values.Deadline.toISOString(),
+      postNumber: values.postNumber || 1,
+      Microtasks: values.Microtasks.map((task, index) => ({
+        Title: task.Title,
+        Order: index + 1,
+      })),
+    };
 
-      PromiseCreateSchema.parse(transformed);
-      mutate(transformed, {
-        onSuccess: () => {
-          notification.success({
-            message: "You successfully created Promise!",
-          });
-          setIsCreateModal(false);
-          form.resetFields();
-        },
-      });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        console.error("❌ Zod validation failed:", error.errors);
-      }
-    }
+    PromiseCreateSchema.parse(transformed);
+    mutate(transformed, {
+      onSuccess: () => {
+        notification.success({
+          message: "You successfully created Promise!",
+        });
+        setIsCreateModal(false);
+        form.resetFields();
+      },
+      onError: (error) => {
+        Modal.error({
+          title: "Promise creation feedback",
+          content: error,
+          okText: "Got it",
+          centered: true,
+          style: { zIndex: 1100 },
+        });
+      },
+    });
   };
 
   return (

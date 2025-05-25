@@ -6,7 +6,10 @@ export interface BadgesBlockProps {
 }
 export const BadgesBlock = ({ badges }: BadgesBlockProps) => {
   return (
-    <section className='flex flex-col gap-1'>
+    <section
+      className='flex flex-col gap-1'
+      id='achievements-panel'
+    >
       <Typography.Text className='font-medium'>Achievments</Typography.Text>
       <div className='flex flex-col gap-1'>
         {badges.length == 0 && <Empty />}

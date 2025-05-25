@@ -1,5 +1,6 @@
 import { Avatar, Flex, notification, Typography } from "antd";
 import { AiOutlineCheckCircle, AiOutlineCloseCircle } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 import {
   useAcceptFollowRequest,
   useDeclineFollowRequest,
@@ -8,6 +9,7 @@ import {
 
 export const FriendshipRequests = () => {
   const { data: incomingFriendsList } = useGetIncomingFollowRequests();
+  const navigate = useNavigate();
 
   const { mutate: declineFriendShipMutate } = useDeclineFollowRequest();
   const { mutate: acceptFriendShipMutate } = useAcceptFollowRequest();
@@ -52,7 +54,10 @@ export const FriendshipRequests = () => {
               >
                 <div>
                   <Typography.Text className='text-black'>
-                    <strong style={{ cursor: "pointer" }}>
+                    <strong
+                      className='cursor-pointer hover:underline'
+                      onClick={() => navigate(`/profile/${friend.username}`)}
+                    >
                       {friend.username}
                     </strong>
                   </Typography.Text>

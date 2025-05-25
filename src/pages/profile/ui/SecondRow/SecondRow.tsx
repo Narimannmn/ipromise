@@ -24,20 +24,18 @@ export const SecondRow = ({
           label: "Public",
           key: "1",
           children: (
-            // <PostsFeed
-            //   posts={posts?.filter((post) => !post.is_private) || null}
-            // />
-            <PostsFeed posts={posts || null} />
+            <PostsFeed
+              posts={posts?.filter((post) => !post.is_private) || null}
+            />
           ),
         },
         {
           label: "Private",
           key: "2",
           children: (
-            // <PostsFeed
-            //   posts={posts?.filter((post) => post.is_private) || null}
-            // />
-            <PostsFeed posts={posts || null} />
+            <PostsFeed
+              posts={posts?.filter((post) => post.is_private) || null}
+            />
           ),
         },
       ]
