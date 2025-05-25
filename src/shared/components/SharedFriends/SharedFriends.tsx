@@ -20,7 +20,7 @@ export const SharedFriends = () => {
   const { mutate } = useSendFollowRequest();
   const sendRequest = (username: string) => {
     mutate(username, {
-      onSuccess: () => notification.success({ message: "Send friend success" }),
+      onSuccess: () => notification.success({ message: "Send friend request" }),
     });
   };
 

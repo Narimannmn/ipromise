@@ -12,7 +12,10 @@ export const PostTitle = ({ post }: PostTitleProps) => {
     <div className='flex gap-2 items-center p-4 border-b border-[#d9d9d9]'>
       <Avatar
         alt='userAvatar'
-        src={post.avatar_url}
+        src={
+          post.avatar_url ||
+          `https://ui-avatars.com/api/?name=${post.username?.charAt(0).toUpperCase()}&background=0D8ABC&color=fff&size=128`
+        }
         size={"default"}
       />
       <Flex vertical>

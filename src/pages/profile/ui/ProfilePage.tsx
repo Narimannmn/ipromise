@@ -17,10 +17,7 @@ export const ProfilePage = () => {
     useGetBadgesByUsername(selectedUserName);
   const { data: profile } = useGetProfileByUserName(selectedUserName);
   const { data: promises } = useGetPromisesByUsername(selectedUserName);
-
-  const { data: posts = [] } = useGetPostsByUsername(
-    username || user?.username,
-  );
+  const { data: posts = [] } = useGetPostsByUsername(selectedUserName);
 
   return (
     <Flex

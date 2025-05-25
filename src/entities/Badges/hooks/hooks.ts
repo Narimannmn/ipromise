@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@/entities/User/schemas/schemas";
-import { getBagesByUserName } from "../services/services";
+import { getBages, getBagesByUserName } from "../services/services";
 
 export const useGetBadgesByUsername = (
   username: User["username"] | undefined,
@@ -14,5 +14,12 @@ export const useGetBadgesByUsername = (
       return getBagesByUserName(username);
     },
     enabled: !!username,
+  });
+};
+
+export const useGetAllBadges = () => {
+  return useQuery({
+    queryKey: ["useGetAllBadges"],
+    queryFn: getBages,
   });
 };

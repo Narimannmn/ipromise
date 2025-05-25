@@ -1,4 +1,4 @@
-import { Badge, Flex, Menu, Row } from "antd";
+import { Badge, Drawer, Empty, Flex, Menu, Row, Tabs } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { MenuProps } from "antd/lib";
 import { useState } from "react";
@@ -12,6 +12,7 @@ export const Head = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState<string>(location.pathname);
 
   const onClick: MenuProps["onClick"] = (e) => {
@@ -51,7 +52,32 @@ export const Head = () => {
               count={11}
               size='small'
             >
-              <AiOutlineBell style={{ cursor: "pointer" }} />
+              <AiOutlineBell
+                style={{ cursor: "pointer" }}
+                onClick={() => setOpen(true)}
+              />
+              <Drawer
+                title='Notification'
+                closable={{ "aria-label": "Close Button" }}
+                onClose={() => setOpen(false)}
+                open={open}
+              >
+                <Tabs
+                  defaultActiveKey='1'
+                  items={[
+                    {
+                      label: "Unread",
+                      key: "1",
+                      children: <Empty />,
+                    },
+                    {
+                      label: "Read",
+                      key: "2",
+                      children: <Empty />,
+                    },
+                  ]}
+                />
+              </Drawer>
             </Badge>
             <NavProfile />
           </Flex>

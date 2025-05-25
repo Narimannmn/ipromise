@@ -25,6 +25,14 @@ export const IPromiseSchema = z.object({
 });
 
 export type IPromise = z.infer<typeof IPromiseSchema>;
+
+export const IPromisePredictionSchema = z.object({
+  advice: z.string(),
+  promise_id: IDSchema,
+  success_rate: z.number(),
+});
+export type IPromisePrediction = z.infer<typeof IPromisePredictionSchema>;
+
 export const MicrotaskCreateSchema = z.object({
   Title: z.string().max(255),
   Order: z.number().int().positive(),

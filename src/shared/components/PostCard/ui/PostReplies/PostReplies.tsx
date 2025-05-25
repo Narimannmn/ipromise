@@ -47,7 +47,6 @@ export const PostReplies = ({
       is_liked_by_me: false,
     };
 
-    // Optimistic update
     if (replyingToId === post.id) {
       setShownPost((prev) => ({
         ...prev,
@@ -111,10 +110,13 @@ export const PostReplies = ({
           <div className='flex justify-between'>
             <div
               key={reply.id}
-              className='flex gap-2 items-start  border-[#d9d9d9] border-b '
+              className='flex gap-2 items-start  '
             >
               <img
-                src={reply.avatar_url}
+                src={
+                  reply.avatar_url ||
+                  `https://ui-avatars.com/api/?name=${reply.username?.charAt(0).toUpperCase()}&background=0D8ABC&color=fff&size=128`
+                }
                 className='rounded-full w-6 h-6'
               />
               <div>
@@ -143,10 +145,13 @@ export const PostReplies = ({
           {(reply.replies || []).map((subReply) => (
             <div
               key={subReply.id}
-              className='ml-10 flex gap-2 items-start  border-[#d9d9d9] border-b'
+              className='ml-10 flex gap-2 items-start  '
             >
               <img
-                src={subReply.avatar_url}
+                src={
+                  subReply.avatar_url ||
+                  `https://ui-avatars.com/api/?name=${subReply.username?.charAt(0).toUpperCase()}&background=0D8ABC&color=fff&size=128`
+                }
                 className='rounded-full w-4 h-4'
               />
               <div>

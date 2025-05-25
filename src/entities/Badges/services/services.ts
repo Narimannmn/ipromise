@@ -8,9 +8,26 @@ import { appLocalStorage } from "@/shared/utils/appLocalStorage/appLocalStorage"
 import { Badge, BadgeSchema } from "../schemas/schemas";
 
 export const getBagesByUserName = async (username: User["username"]) => {
-  // `badges/${username}`;
   return instance
-    .get<Badge[]>("badges/me", {
+    .get<Badge[]>(`badges/${username}`, {
+      headers: {
+        Authorization: `Bearer ${appLocalStorage.getItem(appLocalStorageKey.accessToken)}`,
+      },
+    })
+    .then((response) => {
+      const result = BackendCustomResponseSchema(
+        z.array(BadgeSchema).nullable(),
+      ).safeParse(response.data);
+      if (!result.success) {
+        throw new Error(t("invalidType", { ns: "requests" }));
+      }
+      return result.data.data;
+    });
+};
+
+export const getBages = async () => {
+  return await instance
+    .get<Badge[]>("badges/", {
       headers: {
         Authorization: `Bearer ${appLocalStorage.getItem(appLocalStorageKey.accessToken)}`,
       },

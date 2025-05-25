@@ -1,9 +1,9 @@
-import { Card, ConfigProvider, Flex, Spin } from "antd";
+import { Card, ConfigProvider, Flex } from "antd";
+import { UserAvatar } from "@/pages/feed/ui/UserAvatar/UserAvatar";
 import { Badge } from "@/entities/Badges/schemas/schemas";
 import { User } from "@/entities/User/schemas/schemas";
+import { BadgesCard } from "@/shared/components/BadgesCard/BadgesCard";
 import { ProfileAvatarCardTheme } from "../../data/data";
-import { BadgesBlock } from "../BadgesBlock/BadgesBlock";
-import { UserAvatar } from "../UserAvatar/UserAvatar";
 
 export interface FirstRowProps {
   achievements: Badge[] | null;
@@ -19,14 +19,13 @@ export const FirstRow = ({ achievements, isLoading, user }: FirstRowProps) => {
     >
       <ConfigProvider theme={ProfileAvatarCardTheme}>
         <Card title={<UserAvatar user={user || null} />}>
-          {isLoading && (
-            <div className='flex justify-center'>
-              <Spin size='default' />
-            </div>
-          )}
-          {achievements && !isLoading && <BadgesBlock badges={achievements} />}
+          <p>{user?.bio || "This is bio"}</p>
         </Card>
       </ConfigProvider>
+      <BadgesCard
+        badges={achievements}
+        isLoading={isLoading}
+      />
     </Flex>
   );
 };

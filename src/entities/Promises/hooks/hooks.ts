@@ -6,10 +6,12 @@ import {
   createPromise,
   deleteMicroTask,
   getPromisesByUserName,
+  getPromisesPrediction,
   updateMicroTask,
   updatePromise,
 } from "../services/services";
 import {
+  IPromise,
   MicrotaskCreate,
   MicroTaskUpdate,
   PromiseCreate,
@@ -32,10 +34,31 @@ export const useGetPromisesByUsername = (
   });
 };
 
+export const useGetPromisePrediction = (id: IPromise["id"] | undefined) => {
+  return useQuery({
+    queryKey: ["useGetPromisePrediction", id || 0],
+    queryFn: () => {
+      if (!id) {
+        throw Error("missed id");
+      }
+      return getPromisesPrediction(id);
+    },
+    enabled: !!id,
+  });
+};
+
 export const usePostPromise = () => {
+  const queryClient = useQueryClient();
+
   return useMutation<PromiseCreateResponse, string, PromiseCreate>({
     mutationKey: ["usePostPromise"],
     mutationFn: async (data) => createPromise(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["useGetPromisesByUsername"],
+        exact: false,
+      });
+    },
   });
 };
 

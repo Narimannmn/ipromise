@@ -6,20 +6,21 @@ export interface UserAvatarProps {
 }
 export const UserAvatar = ({ user }: UserAvatarProps) => {
   if (!user) return null;
+
   return (
-    <Flex gap={8}>
+    <Flex
+      gap={8}
+      align='center'
+    >
       <Avatar
         alt='userAvatar'
-        src={user.avatar_url}
+        src={
+          user.avatar_url ||
+          `https://ui-avatars.com/api/?name=${user.username?.charAt(0).toUpperCase()}&background=0D8ABC&color=fff&size=128`
+        }
         size={"large"}
       />
-      <Flex
-        vertical
-        gap={4}
-      >
-        <Typography.Title level={4}>{user.username}</Typography.Title>
-        <Typography.Text>{user.bio || "This is bio"}</Typography.Text>
-      </Flex>
+      <Typography.Title level={4}>{user.username}</Typography.Title>
     </Flex>
   );
 };

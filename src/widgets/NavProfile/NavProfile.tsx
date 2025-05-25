@@ -64,7 +64,10 @@ export const NavProfile = () => {
     >
       <div className={styles.navProfile}>
         <Avatar
-          src={user.avatar_url}
+          src={
+            user.avatar_url ||
+            `https://ui-avatars.com/api/?name=${user.username?.charAt(0).toUpperCase()}&background=0D8ABC&color=fff&size=128`
+          }
           className={styles.avatar}
           icon={<FaRegUserCircle />}
           alt={`${user.username}  avatar`}

@@ -9,6 +9,8 @@ import { BackendCustomResponseSchema } from "@/shared/schemas/error/error";
 import { appLocalStorage } from "@/shared/utils/appLocalStorage/appLocalStorage";
 import {
   IPromise,
+  IPromisePrediction,
+  IPromisePredictionSchema,
   IPromiseSchema,
   MicrotaskCreate,
   MicroTaskUpdate,
@@ -27,6 +29,24 @@ export const getPromisesByUserName = async (username: User["username"]) => {
     .then((response) => {
       const result = BackendCustomResponseSchema(
         z.array(IPromiseSchema).nullable(),
+      ).safeParse(response.data);
+      if (!result.success) {
+        throw new Error(t("invalidType", { ns: "requests" }));
+      }
+      return result.data.data;
+    });
+};
+
+export const getPromisesPrediction = async (id: ID) => {
+  return instance
+    .get<IPromisePrediction>(`promises/${id}/prediction`, {
+      headers: {
+        Authorization: `Bearer ${appLocalStorage.getItem(appLocalStorageKey.accessToken)}`,
+      },
+    })
+    .then((response) => {
+      const result = BackendCustomResponseSchema(
+        IPromisePredictionSchema,
       ).safeParse(response.data);
       if (!result.success) {
         throw new Error(t("invalidType", { ns: "requests" }));

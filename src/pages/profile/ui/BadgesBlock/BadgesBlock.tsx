@@ -10,7 +10,6 @@ export const BadgesBlock = ({ badges }: BadgesBlockProps) => {
       className='flex flex-col gap-1'
       id='achievements-panel'
     >
-      <Typography.Text className='font-medium'>Achievments</Typography.Text>
       <div className='flex flex-col gap-1'>
         {badges.length == 0 && <Empty />}
         {badges.map((badge) => (

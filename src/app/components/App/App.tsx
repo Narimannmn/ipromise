@@ -1,7 +1,6 @@
 import { StyleProvider } from "@ant-design/cssinjs";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { App as AppContainer, ConfigProvider } from "antd";
-import ruRU from "antd/locale/ru_RU";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
 import { useEffect } from "react";
@@ -63,10 +62,7 @@ function App() {
         <I18nextProvider i18n={i18next}>
           <QueryClientProvider client={queryClient}>
             <StyleProvider layer>
-              <ConfigProvider
-                theme={theme}
-                locale={ruRU}
-              >
+              <ConfigProvider theme={theme}>
                 <IconContext.Provider value={{ size: "20" }}>
                   <RouterProvider router={router} />
                 </IconContext.Provider>

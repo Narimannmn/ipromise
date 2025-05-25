@@ -1,8 +1,8 @@
-import { Card, ConfigProvider, Flex, Spin } from "antd";
+import { Card, ConfigProvider, Flex } from "antd";
 import { useAuthStore } from "@/entities/Auth/store/store";
 import { useGetBadgesByUsername } from "@/entities/Badges/hooks/hooks";
+import { BadgesCard } from "@/shared/components/BadgesCard/BadgesCard";
 import { ProfileAvatarCardTheme } from "../../data/data";
-import { BadgesBlock } from "../BadgesBlock/BadgesBlock";
 import { UserAvatar } from "../UserAvatar/UserAvatar";
 
 export const FirstRow = () => {
@@ -17,16 +17,13 @@ export const FirstRow = () => {
     >
       <ConfigProvider theme={ProfileAvatarCardTheme}>
         <Card title={<UserAvatar user={user || null} />}>
-          {achievementsLoading && (
-            <div className='flex justify-center'>
-              <Spin size='default' />
-            </div>
-          )}
-          {achievements && !achievementsLoading && (
-            <BadgesBlock badges={achievements} />
-          )}
+          <p>{user?.bio || "This is bio"}</p>
         </Card>
       </ConfigProvider>
+      <BadgesCard
+        badges={achievements}
+        isLoading={achievementsLoading}
+      />
     </Flex>
   );
 };
