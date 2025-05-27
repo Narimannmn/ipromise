@@ -15,8 +15,9 @@ import {
 } from "@/entities/Follows/hooks/hooks";
 
 export const SharedFriends = () => {
-  const { data, isLoading } = useGetRecommendedFriends();
   const navigate = useNavigate();
+
+  const { data, isLoading } = useGetRecommendedFriends();
   const { mutate } = useSendFollowRequest();
   const sendRequest = (username: string) => {
     mutate(username, {

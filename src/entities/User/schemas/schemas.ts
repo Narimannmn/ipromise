@@ -14,3 +14,11 @@ export const UserSchema = z.object({
   username: z.string(),
 });
 export type User = z.infer<typeof UserSchema>;
+
+export const UserUpdateSchema = z.object({
+  bio: z.string(),
+  username: z.string(),
+  avatar_url: z.instanceof(File),
+});
+
+export type UserUpdate = z.infer<typeof UserUpdateSchema>;

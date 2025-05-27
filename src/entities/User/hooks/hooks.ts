@@ -1,9 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "@/entities/Auth/store/store";
 import { appLocalStorageKey } from "@/shared/config/appLocalStorage/appLocalStorage";
 import { appLocalStorage } from "@/shared/utils/appLocalStorage/appLocalStorage";
 import { User } from "../schemas/schemas";
-import { getUserMe, getUserProfileByUserName } from "../services/services";
+import {
+  getUserMe,
+  getUserProfileByUserName,
+  updateProfile,
+} from "../services/services";
 
 export const staleTime = 60 * 1000; // 1 minute
 
@@ -44,5 +48,12 @@ export const useGetProfileByUserName = (
     },
     staleTime,
     enabled: !!username,
+  });
+};
+
+export const useUpdateProfile = () => {
+  return useMutation({
+    mutationKey: ["useUpdateProfile"],
+    mutationFn: updateProfile,
   });
 };

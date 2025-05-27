@@ -111,7 +111,7 @@ export const PromiseProgressCardSection = ({
           <div style={{ textAlign: "center" }}>
             <div className='flex justify-center'>
               <img
-                src='https://cdn-icons-png.flaticon.com/512/4021/4021629.png'
+                src='https://media.licdn.com/dms/image/v2/C4D0BAQH83iXcAtUaZw/company-logo_200_200/company-logo_200_200/0/1679143934699/cleverest_technologies_logo?e=2147483647&v=beta&t=UeGm2fkDhBwaZ_0Xbf4IDIA_RchdNVFEEiAwB_7-ir4'
                 alt='AI Illustration'
                 style={{ width: 120, marginBottom: 20 }}
               />

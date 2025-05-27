@@ -34,18 +34,9 @@ export const IPromisePredictionSchema = z.object({
 export type IPromisePrediction = z.infer<typeof IPromisePredictionSchema>;
 
 export const MicrotaskCreateSchema = z.object({
-  Title: z.string().max(255),
-  Order: z.number().int().positive(),
-});
-
-export const PromiseCreateSchema = z.object({
-  Title: z.string().max(255),
-  Description: z.string().max(255).optional(),
-  Deadline: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Invalid date format",
-  }),
-  IsPrivate: z.boolean(),
-  postNumber: z
+  title: z.string().max(255),
+  order: z.number().int().positive(),
+  steps_planned: z
     .number({
       required_error: "postNumber is required",
       invalid_type_error: "postNumber must be a number",
@@ -53,7 +44,16 @@ export const PromiseCreateSchema = z.object({
     .int()
     .min(1, { message: "Must be at least 1" })
     .max(30, { message: "Must be at most 30" }),
-  Microtasks: z
+});
+
+export const PromiseCreateSchema = z.object({
+  title: z.string().max(255),
+  description: z.string().max(255).optional(),
+  deadline: z.string().refine((val) => !isNaN(Date.parse(val)), {
+    message: "Invalid date format",
+  }),
+  is_private: z.boolean(),
+  microtasks: z
     .array(MicrotaskCreateSchema)
     .min(1, "At least one microtask is required"),
 });

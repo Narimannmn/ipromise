@@ -19,11 +19,14 @@ export const CreatePromiseModal = () => {
   const onFinish = (values: PromiseCreateFormFields): void => {
     const transformed: PromiseCreate = {
       ...values,
-      Deadline: values.Deadline.toISOString(),
-      postNumber: values.postNumber || 1,
-      Microtasks: values.Microtasks.map((task, index) => ({
-        Title: task.Title,
-        Order: index + 1,
+      deadline: values.Deadline.toISOString(),
+      is_private: values.IsPrivate,
+      title: values.Title,
+      description: values.Description,
+      microtasks: values.Microtasks.map((task, index) => ({
+        title: task.Title,
+        order: index + 1,
+        steps_planned: values.postNumber!,
       })),
     };
 
