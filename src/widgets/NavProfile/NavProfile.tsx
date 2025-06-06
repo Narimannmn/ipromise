@@ -1,12 +1,13 @@
 import { Avatar, Dropdown, notification, Skeleton } from "antd";
 import { AiOutlineUser } from "react-icons/ai";
 import { FaRegUserCircle } from "react-icons/fa";
-import { LiaSignOutAltSolid } from "react-icons/lia";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/entities/Auth/store/store";
 import { useGetUserMe } from "@/entities/User/hooks/hooks";
 import { privateRoutesMap, publicRoutesMap } from "@/shared/navigation";
 import styles from "./NavProfile.module.css";
+import { LogoutIcon } from "@/components/ui/logout";
+import { UserIcon } from "@/components/ui/user";
 
 export const NavProfile = () => {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ export const NavProfile = () => {
         items: [
           {
             key: "profile",
-            icon: <AiOutlineUser />,
+            icon: <UserIcon size={16} />,
             label: "My Profile",
             onClick: () => {
               navigate(privateRoutesMap.profileMy);
@@ -51,7 +52,7 @@ export const NavProfile = () => {
           },
           {
             key: "Sign Out",
-            icon: <LiaSignOutAltSolid />,
+            icon: <LogoutIcon size={16} />,
             label: "Sign out",
             onClick: () => {
               logout();

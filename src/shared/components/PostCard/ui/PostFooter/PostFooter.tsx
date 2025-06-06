@@ -1,16 +1,19 @@
 import { Statistic } from "antd";
 import type { StatisticProps } from "antd";
+import clsx from "clsx";
 import { useState } from "react";
 import CountUp from "react-countup";
-import { AiOutlineComment, AiOutlineLike } from "react-icons/ai";
 import { useLikePost, useUnlikePost } from "@/entities/Posts/hooks/hooks";
 import { Post } from "@/entities/Posts/schemas/schemas";
+import styles from "./PostFooter.module.css";
+import { HeartIcon } from "@/components/ui/heart";
+import { MessageSquareMoreIcon } from "@/components/ui/message-square-more";
 
 const formatter: StatisticProps["formatter"] = (value) => (
   <CountUp
     end={value as number}
     separator=','
-    duration={3}
+    duration={1}
   />
 );
 
@@ -41,7 +44,7 @@ export const PostFooter = ({ post, onCommentClick }: PostFooterProps) => {
       setIsLiked(true);
       like(post.id, {
         onError: () => {
-          setLikes((prev) => prev - 1); 
+          setLikes((prev) => prev - 1);
           setIsLiked(false);
         },
       });
@@ -51,24 +54,21 @@ export const PostFooter = ({ post, onCommentClick }: PostFooterProps) => {
   return (
     <div className=' flex gap-2 '>
       <div className='px-3 py-2 flex items-center gap-1 cursor-pointer'>
-        <Statistic
-          value={likes}
-          prefix={
-            <AiOutlineLike
-              color={isLiked ? "blue" : "black"}
-              onClick={onClickLike}
-            />
-          }
-          formatter={formatter}
+        <HeartIcon
+          className={clsx({ [styles.heart]: isLiked })}
+          onClick={onClickLike}
+          size={16}
         />
+        {likes}
       </div>
       <div className='px-3 py-2 flex items-center gap-1 cursor-pointer'>
         <Statistic
           value={post.comments}
           prefix={
-            <AiOutlineComment
+            <MessageSquareMoreIcon
               color='black'
               onClick={onCommentClick}
+              size={16}
             />
           }
           formatter={formatter}

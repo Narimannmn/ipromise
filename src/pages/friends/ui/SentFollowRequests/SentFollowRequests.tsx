@@ -1,10 +1,12 @@
 import { Avatar, Flex, notification, Typography } from "antd";
-import { AiOutlineCloseCircle } from "react-icons/ai";
+import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import {
   useGetSentFollowRequests,
   useRemoveFollowRequest,
 } from "@/entities/Follows/hooks/hooks";
+import styles from "./../FriendsPage.module.css";
+import { XIcon } from "@/components/ui/x";
 
 export const SentFollowRequests = () => {
   const navigate = useNavigate();
@@ -60,10 +62,10 @@ export const SentFollowRequests = () => {
                 </div>
               </Flex>
             </Flex>
-            <AiOutlineCloseCircle
+            <XIcon
               size={28}
               color='red'
-              className='cursor-pointer'
+              className={clsx("cursor-pointer", styles.red)}
               onClick={() => declineFriendShip(friend.username)}
             />
           </div>

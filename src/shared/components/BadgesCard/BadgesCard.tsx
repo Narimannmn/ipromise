@@ -17,6 +17,7 @@ export const BadgesCard = ({ badges, isLoading }: BadgesCardProps) => {
     <>
       <Card
         title={"Achievments"}
+        id='achievements-panel'
         extra={
           <span
             className='cursor-pointer text-blue-500'

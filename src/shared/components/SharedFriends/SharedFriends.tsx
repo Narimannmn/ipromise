@@ -7,12 +7,14 @@ import {
   Spin,
   Typography,
 } from "antd";
-import { AiOutlinePlusCircle } from "react-icons/ai";
+import clsx from "clsx";
 import { useNavigate } from "react-router-dom";
 import {
   useGetRecommendedFriends,
   useSendFollowRequest,
 } from "@/entities/Follows/hooks/hooks";
+import styles from "./SharedFriends.module.css";
+import { UserRoundPlusIcon } from "@/components/ui/user-round-plus";
 
 export const SharedFriends = () => {
   const navigate = useNavigate();
@@ -80,11 +82,14 @@ export const SharedFriends = () => {
                 </Flex>
               </Flex>
               <div
-                className='flex items-center gap-1 text-sm text-[#1890FF] cursor-pointer'
+                className={clsx(
+                  styles.red,
+                  "flex items-center gap-1 text-sm text-[#1890FF] cursor-pointer ",
+                )}
                 onClick={() => sendRequest(friend.username)}
               >
                 Add
-                <AiOutlinePlusCircle />
+                <UserRoundPlusIcon size={14} />
               </div>
             </div>
           ))}

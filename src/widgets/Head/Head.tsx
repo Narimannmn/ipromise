@@ -1,11 +1,13 @@
-import { Badge, Drawer, Empty, Flex, Menu, Row, Tabs } from "antd";
+import { Badge, Flex, Menu, Row } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { MenuProps } from "antd/lib";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { IconContext } from "react-icons";
 import { AiOutlineBell, AiOutlineQuestionCircle } from "react-icons/ai";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useNotificationStore } from "@/entities/Notification/store/notificationStore";
 import { NavProfile } from "../NavProfile/NavProfile";
+import { NotificationDrawer } from "../NotificationDrawer/NotificationDrawer";
 import { sidebarItems } from "./routes";
 
 export const Head = () => {
@@ -15,10 +17,18 @@ export const Head = () => {
   const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState<string>(location.pathname);
 
+  const { notifications } = useNotificationStore();
+
+  const unreadNotifications = useMemo(
+    () => notifications.filter((n) => !n.is_read),
+    [notifications],
+  );
+
   const onClick: MenuProps["onClick"] = (e) => {
     setCurrent(e.key);
     navigate(e.key);
   };
+
   return (
     <Header style={{ backgroundColor: "#fff", padding: "0 100px" }}>
       <Row
@@ -49,35 +59,17 @@ export const Head = () => {
             <AiOutlineQuestionCircle style={{ cursor: "pointer" }} />
 
             <Badge
-              count={11}
+              count={unreadNotifications.length}
               size='small'
             >
               <AiOutlineBell
                 style={{ cursor: "pointer" }}
                 onClick={() => setOpen(true)}
               />
-              <Drawer
-                title='Notification'
-                closable={{ "aria-label": "Close Button" }}
+              <NotificationDrawer
+                visible={open}
                 onClose={() => setOpen(false)}
-                open={open}
-              >
-                <Tabs
-                  defaultActiveKey='1'
-                  items={[
-                    {
-                      label: "Unread",
-                      key: "1",
-                      children: <Empty />,
-                    },
-                    {
-                      label: "Read",
-                      key: "2",
-                      children: <Empty />,
-                    },
-                  ]}
-                />
-              </Drawer>
+              />
             </Badge>
             <NavProfile />
           </Flex>

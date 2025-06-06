@@ -9,7 +9,8 @@
     "^@/features(.*)$",
     "^@/entities(.*)$",
     "^@/shared(.*)$",
-    "^[./]"
+    "^[./]",
+    "^@/components(.*)$"
   ],
   "importOrderSeparation": false,
   "importOrderSortSpecifiers": true,

@@ -9,7 +9,7 @@ import {
   Typography,
 } from "antd";
 import { useEffect } from "react";
-import { AiOutlineEdit, AiOutlinePlusCircle } from "react-icons/ai";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthStore } from "@/entities/Auth/store/store";
 import { useGetPromisesByUsername } from "@/entities/Promises/hooks/hooks";
@@ -18,6 +18,7 @@ import { PromiseCrudFormTheme } from "../data/data";
 import { usePromisePageStore } from "../stores/store";
 import { CreatePromiseModal } from "./CreatePromiseModal/CreatePromiseModal";
 import { EditPromiseModal } from "./EditPromiseModal/EditPromiseModal";
+import { SquarePenIcon } from "@/components/ui/square-pen";
 
 export const PromisesPage = () => {
   const { username } = useParams<{ username: string }>();
@@ -85,7 +86,8 @@ export const PromisesPage = () => {
               <Card
                 title={promise.title}
                 extra={
-                  <AiOutlineEdit
+                  <SquarePenIcon
+                    size={20}
                     style={{ cursor: "pointer" }}
                     onClick={() => {
                       if (!promise) return;

@@ -56,6 +56,12 @@ function App() {
     checkForSavedToken();
   }, []);
 
+  useEffect(() => {
+    if (Notification.permission === "default") {
+      Notification.requestPermission();
+    }
+  }, []);
+
   return (
     <AppContainer>
       <ErrorBoundary>

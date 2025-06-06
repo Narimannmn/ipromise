@@ -1,10 +1,8 @@
 import type { MenuProps } from "antd";
-import {
-  AiOutlineCheckSquare,
-  AiOutlineContainer,
-  AiOutlineTeam,
-} from "react-icons/ai";
 import { privateRoutesMap } from "@/shared/navigation";
+import { BookTextIcon } from "@/components/ui/book-text";
+import { ClipboardCheckIcon } from "@/components/ui/clipboard-check";
+import { UsersIcon } from "@/components/ui/users";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -19,17 +17,17 @@ export const sidebarItems: MenuItem[] = [
         Feed
       </span>
     ),
-    icon: <AiOutlineContainer />,
+    icon: <BookTextIcon size={16} />,
   },
   {
     key: privateRoutesMap.promisesMy,
     label: "Promises",
-    icon: <AiOutlineCheckSquare />,
+    icon: <ClipboardCheckIcon size={16} />,
   },
   {
     key: privateRoutesMap.friendsMy,
     label: "Friends",
-    icon: <AiOutlineTeam />,
+    icon: <UsersIcon size={16} />,
   },
 ];
 
