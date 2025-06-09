@@ -77,10 +77,14 @@ export const PromisesPage = () => {
           {promises?.map((promise) => {
             const steps = promise?.microtasks
               ?.sort((a, b) => a.order - b.order)
-              .map((step) => ({
-                title: step.title,
-                description: `Made ${step.posts_count} post out of ${step.steps_planned}`,
-              }));
+              .map((step) => {
+                const isDone = step.posts_count >= step.steps_planned;
+                return {
+                  title: step.title,
+                  description: `Made ${step.posts_count} post out of ${step.steps_planned}`,
+                  status: isDone ? ("finish" as const) : ("process" as const),
+                };
+              });
             if (!promise) return null;
             return (
               <Card

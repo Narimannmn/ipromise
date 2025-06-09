@@ -73,6 +73,7 @@ export type PromiseCreateErrorResponse = {
 export const MicroTaskUpdateSchema = z.object({
   status: z.string(),
   title: z.string(),
+  steps_planned: z.number(),
 });
 
 export type MicroTaskUpdate = z.infer<typeof MicroTaskUpdateSchema>;

@@ -9,13 +9,19 @@ export const feedPage = () => {
       gap={24}
       justify='space-between'
     >
-      <div style={{ flex: 1 }}>
+      <div
+        style={{ flex: 1 }}
+        className='w-[350px]'
+      >
         <FirstRow />
       </div>
       <div style={{ flex: 2 }}>
         <SecondRow />
       </div>
-      <div style={{ flex: 1 }}>
+      <div
+        style={{ flex: 1 }}
+        className='w-[350px]'
+      >
         <ThirdRow />
       </div>
     </Flex>

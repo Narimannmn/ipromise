@@ -89,12 +89,12 @@ export const PostCreateForm = ({
         <Form.Item
           name='attachments'
           valuePropName='fileList'
-          getValueFromEvent={(e: { fileList: UploadFile<File>[] }) =>
-            e.fileList.map((file) => ({
+          getValueFromEvent={(e: { fileList: UploadFile<File>[] }) => {
+            return e.fileList.map((file) => ({
               ...file,
               url: file.url || URL.createObjectURL(file.originFileObj as File),
-            }))
-          }
+            }));
+          }}
         >
           <Upload
             multiple

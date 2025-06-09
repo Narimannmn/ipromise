@@ -62,10 +62,6 @@ export const EditUserModal = ({ open, onCancel, user }: EditUserModalProps) => {
 
     const avatarFile = fileList[0]?.originFileObj;
 
-    if (!avatarFile || !(avatarFile instanceof File)) {
-      return message.error("Please upload a valid image file.");
-    }
-
     const payload: UserUpdate = {
       ...values,
       avatar_url: avatarFile,

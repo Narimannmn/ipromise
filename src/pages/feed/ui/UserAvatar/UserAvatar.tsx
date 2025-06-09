@@ -20,7 +20,9 @@ export const UserAvatar = ({ user }: UserAvatarProps) => {
         }
         size={"large"}
       />
-      <Typography.Title level={4}>{user.username}</Typography.Title>
+      <div>
+        <Typography.Title level={4}>{user.username}</Typography.Title>
+      </div>
     </Flex>
   );
 };

@@ -14,10 +14,13 @@ export const FirstRow = () => {
     <Flex
       vertical
       gap={16}
+      className='w-[350px]'
     >
       <ConfigProvider theme={ProfileAvatarCardTheme}>
         <Card title={<UserAvatar user={user || null} />}>
-          <p>{user?.bio || "This is bio"}</p>
+          <div style={{ wordBreak: "break-word" }}>
+            {user?.bio || "This is bio"}
+          </div>
         </Card>
       </ConfigProvider>
       <BadgesCard

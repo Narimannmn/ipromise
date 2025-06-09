@@ -1,5 +1,4 @@
 import { t } from "i18next";
-import { User } from "@/entities/User/schemas/schemas";
 import { instance } from "@/shared/api/instance";
 import { appLocalStorageKey } from "@/shared/config/appLocalStorage/appLocalStorage";
 import { ID } from "@/shared/schemas";
@@ -8,7 +7,6 @@ import { appLocalStorage } from "@/shared/utils/appLocalStorage/appLocalStorage"
 import {
   CreatePostRequest,
   getPostsByUserNameSchema,
-  Post,
 } from "../schemas/schemas";
 
 export interface CreatePostResponse {
@@ -27,9 +25,9 @@ export const createPost = (payload: CreatePostRequest) => {
   formData.append("content", payload.content);
 
   if (payload.attachments) {
-    payload.attachments.forEach((file) => {
-      formData.append("attachments", file);
-    });
+    for (const file of payload.attachments) {
+      formData.append("attachments", file); // 👈 одно имя, много файлов = массив
+    }
   }
 
   return instance.post<CreatePostResponse, BackendErrorResponse>(
@@ -43,41 +41,76 @@ export const createPost = (payload: CreatePostRequest) => {
     },
   );
 };
-export const getFeed = async () => {
-  return instance
-    .get<Post[]>("posts/public/tree", {
-      headers: {
-        Authorization: `Bearer ${appLocalStorage.getItem(appLocalStorageKey.accessToken)}`,
-      },
-    })
-    .then((response) => {
-      const result = BackendCustomResponseSchema(
-        getPostsByUserNameSchema,
-      ).safeParse(response.data);
-      if (!result.success) {
-        throw new Error(t("invalidType", { ns: "requests" }));
-      }
-      return result.data.data.posts;
-    });
-};
-export const getPostsByUserName = async (username: User["username"]) => {
-  return instance
-    .get<Post[]>(`posts/user/${username}`, {
-      headers: {
-        Authorization: `Bearer ${appLocalStorage.getItem(appLocalStorageKey.accessToken)}`,
-      },
-    })
-    .then((response) => {
-      const result = BackendCustomResponseSchema(
-        getPostsByUserNameSchema,
-      ).safeParse(response.data);
-      if (!result.success) {
-        throw new Error(t("invalidType", { ns: "requests" }));
-      }
-      return result.data.data.posts;
-    });
+
+export const getFeed = async ({
+  pageParam,
+}: {
+  pageParam?: {
+    after: string;
+    after_id: string;
+  };
+}) => {
+  const params: Record<string, unknown> = {
+    limit: 5,
+  };
+
+  if (pageParam) {
+    params.after_created_at = pageParam.after;
+    params.after_id = pageParam.after_id;
+  }
+
+  const response = await instance.get("posts/public/tree", {
+    params,
+    headers: {
+      Authorization: `Bearer ${appLocalStorage.getItem(appLocalStorageKey.accessToken)}`,
+    },
+  });
+
+  const result = BackendCustomResponseSchema(
+    getPostsByUserNameSchema,
+  ).safeParse(response.data);
+  if (!result.success) {
+    throw new Error("Invalid response format");
+  }
+
+  return result.data.data.posts;
 };
 
+export const getUserPostsFeed = async ({
+  username,
+  pageParam,
+}: {
+  username: string;
+  pageParam?: {
+    after: string;
+    after_id: string;
+  };
+}) => {
+  const params: Record<string, unknown> = {
+    limit: 5,
+  };
+
+  if (pageParam) {
+    params.after_created_at = pageParam.after;
+    params.after_id = pageParam.after_id;
+  }
+
+  const response = await instance.get(`posts/user/${username}`, {
+    params,
+    headers: {
+      Authorization: `Bearer ${appLocalStorage.getItem(appLocalStorageKey.accessToken)}`,
+    },
+  });
+
+  const result = BackendCustomResponseSchema(
+    getPostsByUserNameSchema,
+  ).safeParse(response.data);
+  if (!result.success) {
+    throw new Error(t("invalidType", { ns: "requests" }));
+  }
+
+  return result.data.data.posts;
+};
 export interface createCommentProps {
   id: ID;
   content: string;
@@ -122,4 +155,14 @@ export const UnLikePost = async (id: ID) => {
       Authorization: `Bearer ${appLocalStorage.getItem(appLocalStorageKey.accessToken)}`,
     },
   });
+};
+
+export const getPostById = async (postId: string) => {
+  const response = await instance.get(`/posts/${postId}/full`, {
+    headers: {
+      Authorization: `Bearer ${appLocalStorage.getItem(appLocalStorageKey.accessToken)}`,
+    },
+  });
+
+  return response.data.data;
 };

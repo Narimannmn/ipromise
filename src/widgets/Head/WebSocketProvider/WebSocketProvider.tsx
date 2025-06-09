@@ -60,11 +60,11 @@ export const WebSocketProvider = ({ children }: Props) => {
     };
 
     ws.onclose = () => {
-      notification.error({ message: "❌ WebSocket closed" });
+      console.error({ message: "❌ WebSocket closed" });
     };
 
     ws.onerror = (err) => {
-      notification.error({ message: `🚨 WebSocket error: ${err}` });
+      console.error({ message: `🚨 WebSocket error: ${err}` });
     };
 
     return () => {

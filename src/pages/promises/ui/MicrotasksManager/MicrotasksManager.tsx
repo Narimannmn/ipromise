@@ -1,4 +1,14 @@
-import { Button, Form, Input, message } from "antd";
+import {
+  Button,
+  Card,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  message,
+  Row,
+  Switch,
+} from "antd";
 import { FormInstance } from "antd/lib";
 import { AiOutlineDelete, AiOutlinePlusCircle } from "react-icons/ai";
 import {
@@ -6,9 +16,10 @@ import {
   useDeleteMicroTask,
   useUpdateMicroTask,
 } from "@/entities/Promises/hooks/hooks";
+import { MicroTask } from "@/entities/Promises/shemas/shemas";
 
 interface MicrotasksManagerProps {
-  microtasks: Array<{ id?: string; title: string; status?: string }>;
+  microtasks: MicroTask[];
   promiseId: string;
   form: FormInstance;
 }
@@ -51,12 +62,20 @@ export const MicrotasksManager = ({
   const handleAdd = () => {
     const currentFields = form.getFieldValue("microtasks") || [];
     form.setFieldsValue({
-      microtasks: [...currentFields, { title: "" }],
+      microtasks: [
+        ...currentFields,
+        { title: "", steps_planned: 1, status: "in_progress" },
+      ],
     });
   };
 
   const handleSaveChanges = async (values: {
-    microtasks: Array<{ id?: string; title: string }>;
+    microtasks: Array<{
+      id?: string;
+      title: string;
+      steps_planned?: number;
+      status?: "in_progress" | "finished";
+    }>;
   }) => {
     const existingMicrotasks = microtasks || [];
     const formMicrotasks = values.microtasks || [];
@@ -66,26 +85,34 @@ export const MicrotasksManager = ({
         const formTask = formMicrotasks[i];
         const existingTask = existingMicrotasks[i];
 
+        const status =
+          formTask.status === "finished" ? "finished" : "in_progress";
+
         if (existingTask?.id) {
-          if (formTask.title !== existingTask.title) {
+          if (
+            formTask.title !== existingTask.title ||
+            formTask.steps_planned !== existingTask.steps_planned ||
+            status !== existingTask.status
+          ) {
             await updateMicroTaskMutation.mutateAsync({
               microtaskId: existingTask.id,
               microtask: {
                 title: formTask.title,
-                status: "in_progress",
+                steps_planned: formTask.steps_planned || 1,
+                status,
               },
             });
           }
         } else {
-          // Create new microtask
           await createMicroTaskMutation.mutateAsync({
-            Title: formTask.title,
-            Order: i,
+            title: formTask.title,
+            order: i,
+            steps_planned: formTask.steps_planned || 1,
           });
         }
       }
       message.success("Microtasks saved");
-    } catch (error) {
+    } catch {
       message.error("Error saving microtasks");
     }
   };
@@ -101,34 +128,107 @@ export const MicrotasksManager = ({
         {(fields) => (
           <>
             {fields.map(({ key, name, ...restField }) => (
-              <Form.Item
+              <Card
                 key={key}
-                style={{ marginBottom: 8 }}
-                required={false}
-              >
-                <Form.Item
-                  {...restField}
-                  name={[name, "title"]}
-                  noStyle
-                  rules={[{ required: true, message: "Step point required" }]}
-                >
-                  <Input
-                    placeholder='Step Point'
-                    suffix={
-                      <Button
-                        type='text'
-                        danger
-                        size='small'
-                        onClick={() => {
-                          handleDelete(name);
-                        }}
-                      >
-                        <AiOutlineDelete style={{ color: "red" }} />
-                      </Button>
-                    }
+                title={
+                  <Form.Item
+                    {...restField}
+                    name={[name, "title"]}
+                    rules={[{ required: true, message: "Step point required" }]}
+                    style={{ marginBottom: 0 }}
+                  >
+                    <Input
+                      placeholder='Step Point Title'
+                      bordered={false}
+                      style={{
+                        fontSize: 16,
+                        fontWeight: 500,
+                      }}
+                    />
+                  </Form.Item>
+                }
+                extra={
+                  <Button
+                    type='text'
+                    icon={<AiOutlineDelete />}
+                    danger
+                    onClick={() => handleDelete(name)}
                   />
-                </Form.Item>
-              </Form.Item>
+                }
+                style={{
+                  marginBottom: 16,
+                  borderRadius: 12,
+                  border: "1px solid #f0f0f0",
+                }}
+                bodyStyle={{
+                  padding: "12px 16px",
+                  backgroundColor: "#ffffff",
+                }}
+              >
+                <Row
+                  gutter={16}
+                  align='middle'
+                  wrap={false}
+                >
+                  <Col>
+                    <span style={{ fontWeight: 500 }}>Planned posts:</span>
+                  </Col>
+
+                  <Col style={{ width: 80 }}>
+                    <Form.Item
+                      {...restField}
+                      name={[name, "steps_planned"]}
+                      rules={[
+                        { required: true, message: "Step count required" },
+                      ]}
+                      style={{ marginBottom: 0 }}
+                    >
+                      <InputNumber
+                        min={1}
+                        max={30}
+                        style={{
+                          width: "100%",
+                          borderRadius: 6,
+                        }}
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col>
+                    <Form.Item
+                      noStyle
+                      shouldUpdate={(prev, next) =>
+                        prev.microtasks?.[name]?.status !==
+                        next.microtasks?.[name]?.status
+                      }
+                    >
+                      {() => {
+                        const isFinished =
+                          form.getFieldValue(["microtasks", name, "status"]) ===
+                          "completed";
+                        return (
+                          <Switch
+                            checked={isFinished}
+                            checkedChildren='Done'
+                            unCheckedChildren='Active'
+                            onChange={(checked) =>
+                              form.setFieldValue(
+                                ["microtasks", name, "status"],
+                                checked ? "completed" : "in_progress",
+                              )
+                            }
+                            style={{
+                              backgroundColor: isFinished
+                                ? "#1677ff"
+                                : undefined,
+                            }}
+                          />
+                        );
+                      }}
+                    </Form.Item>
+                  </Col>
+                </Row>
+              </Card>
             ))}
 
             <Button
@@ -136,7 +236,7 @@ export const MicrotasksManager = ({
               onClick={handleAdd}
               icon={<AiOutlinePlusCircle />}
             >
-              Add new one
+              Add StepPoint
             </Button>
           </>
         )}

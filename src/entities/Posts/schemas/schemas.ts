@@ -47,14 +47,17 @@ export const PostSchema: ZodType<Post> = z.lazy(() =>
   }),
 );
 
-export const CreatePostSchema = z.object({
+export const CreatePostFormSchema = z.object({
   microtask_id: z.string().uuid({ message: "Invalid microtask_id" }),
   promise_id: z.string().uuid({ message: "Invalid promise_id" }).optional(),
   content: z.string().min(1, { message: "Content cannot be empty" }),
-  attachments: z.array(z.instanceof(File)).optional(),
+  attachments: z.array(z.any()).optional(),
 });
+export type CreatePostFormValues = z.infer<typeof CreatePostFormSchema>;
 
-export type CreatePostRequest = z.infer<typeof CreatePostSchema>;
+export type CreatePostRequest = Omit<CreatePostFormValues, "attachments"> & {
+  attachments?: File[];
+};
 
 export const getPostsByUserNameSchema = z.object({
   posts: z.array(PostSchema),

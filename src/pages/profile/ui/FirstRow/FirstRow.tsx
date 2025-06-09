@@ -5,10 +5,9 @@ import { UserAvatar } from "@/pages/feed/ui/UserAvatar/UserAvatar";
 import { Badge } from "@/entities/Badges/schemas/schemas";
 import { User } from "@/entities/User/schemas/schemas";
 import { BadgesCard } from "@/shared/components/BadgesCard/BadgesCard";
+import { useIsOwnProfile } from "@/shared/hooks/useIsOwnProfile";
 import { ProfileAvatarCardTheme } from "../../data/data";
 import { EditUserModal } from "../EditUserModal/EditUserModal";
-
-// Adjust the import path
 
 export interface FirstRowProps {
   achievements: Badge[] | null;
@@ -18,24 +17,28 @@ export interface FirstRowProps {
 
 export const FirstRow = ({ achievements, isLoading, user }: FirstRowProps) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const isOwnProfile = useIsOwnProfile();
 
   return (
     <Flex
       vertical
       gap={16}
-      className='max-w-[300px]'
     >
       <ConfigProvider theme={ProfileAvatarCardTheme}>
         <Card
           title={<UserAvatar user={user || null} />}
           extra={
-            <AiOutlineEdit
-              style={{ cursor: "pointer" }}
-              onClick={() => setIsEditModalOpen(true)}
-            />
+            isOwnProfile ? (
+              <AiOutlineEdit
+                style={{ cursor: "pointer" }}
+                onClick={() => setIsEditModalOpen(true)}
+              />
+            ) : null
           }
         >
-          <p>{user?.bio || "This is bio"}</p>
+          <div style={{ wordBreak: "break-word" }}>
+            {user?.bio || "This is bio"}
+          </div>
         </Card>
       </ConfigProvider>
 

@@ -26,7 +26,7 @@ export const CreatePromiseModal = () => {
       microtasks: values.Microtasks.map((task, index) => ({
         title: task.Title,
         order: index + 1,
-        steps_planned: values.postNumber!,
+        steps_planned: task.PostCount,
       })),
     };
 

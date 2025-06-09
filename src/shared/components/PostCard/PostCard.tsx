@@ -1,6 +1,7 @@
 import { ConfigProvider, InputRef } from "antd";
 import { useRef, useState } from "react";
 import { Post } from "@/entities/Posts/schemas/schemas";
+import { getPostById } from "@/entities/Posts/services/services";
 import { theme } from "./data/data";
 import { PostBody } from "./ui/PostBody/PostBody";
 import { PostFooter } from "./ui/PostFooter/PostFooter";
@@ -13,8 +14,9 @@ export interface PostCardProps {
 
 export const PostCard = ({ post }: PostCardProps) => {
   const [shownPost, setShownPost] = useState<Post>(post);
-  const [replyingToId, setReplyingToId] = useState<string>(post.id); // allow replying to post too
+  const [replyingToId, setReplyingToId] = useState<string>(post.id);
   const [isFooterShow, setIsFooterShow] = useState<boolean>(true);
+
   const replyRef = useRef<InputRef>(null);
 
   const scrollToReply = () => {
@@ -27,6 +29,11 @@ export const PostCard = ({ post }: PostCardProps) => {
     setIsFooterShow(true);
   };
 
+  const refreshPost = async () => {
+    const updated = await getPostById(post.id);
+    setShownPost(updated);
+  };
+
   return (
     <ConfigProvider theme={theme}>
       <div className='rounded-2xl border border-[#d9d9d9] bg-white'>
@@ -34,15 +41,17 @@ export const PostCard = ({ post }: PostCardProps) => {
         <PostBody post={shownPost} />
         <PostFooter
           post={shownPost}
-          onCommentClick={scrollToReply}
+          onCommentClick={() => {
+            scrollToReply();
+          }}
         />
         {isFooterShow && (
           <PostReplies
             post={shownPost}
-            setShownPost={setShownPost}
             replyingToId={replyingToId}
             setReplyingToId={setReplyingToId}
             replyRef={replyRef}
+            onRefresh={refreshPost}
           />
         )}
       </div>

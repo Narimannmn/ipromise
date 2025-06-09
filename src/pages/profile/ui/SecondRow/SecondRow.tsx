@@ -1,51 +1,57 @@
 import { Flex, Tabs } from "antd";
-import { useParams } from "react-router-dom";
-import { Post } from "@/entities/Posts/schemas/schemas";
+import { useState } from "react";
+import { useInfiniteUserPosts } from "@/entities/Posts/hooks/hooks";
 import { IPromise } from "@/entities/Promises/shemas/shemas";
 import { User } from "@/entities/User/schemas/schemas";
 import { CreatePostSection } from "@/shared/components/CreatePostSection/CreatePostSection";
 import { PostsFeed } from "@/shared/components/PostsFeed/PostsFeed";
 import { PromiseProgressCardSection } from "@/shared/components/PromiseProgressCardSection/PromiseProgressCardSection";
+import { useIsOwnProfile } from "@/shared/hooks/useIsOwnProfile";
 
 export interface SecondRowProps {
   promises: IPromise[] | null;
   selectedUserName?: User["username"];
-  posts?: Post[] | null;
 }
-export const SecondRow = ({
-  promises,
-  selectedUserName,
-  posts,
-}: SecondRowProps) => {
-  const { username } = useParams<{ username: string }>();
-  const tabItems = !username
-    ? [
-        {
-          label: "Public",
-          key: "1",
-          children: (
-            <PostsFeed
-              posts={posts?.filter((post) => !post.is_private) || null}
-            />
-          ),
-        },
-        {
-          label: "Private",
-          key: "2",
-          children: (
-            <PostsFeed
-              posts={posts?.filter((post) => post.is_private) || null}
-            />
-          ),
-        },
-      ]
-    : [
-        {
-          label: "Public",
-          key: "1",
-          children: <PostsFeed posts={posts || null} />,
-        },
-      ];
+
+export const SecondRow = ({ promises, selectedUserName }: SecondRowProps) => {
+  const [activeTab, setActiveTab] = useState("public");
+  const isOwnProfile = useIsOwnProfile();
+
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteUserPosts(selectedUserName);
+
+  const posts = data?.pages.flat() || [];
+
+  const tabItems = [
+    {
+      label: "Public",
+      key: "public",
+      children: (
+        <PostsFeed
+          posts={posts.filter((post) => !post.is_private)}
+          onLoadMore={() => {
+            if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+          }}
+        />
+      ),
+    },
+    ...(isOwnProfile
+      ? [
+          {
+            label: "Private",
+            key: "private",
+            children: (
+              <PostsFeed
+                posts={posts.filter((post) => post.is_private)}
+                onLoadMore={() => {
+                  if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+                }}
+              />
+            ),
+          },
+        ]
+      : []),
+  ];
 
   return (
     <Flex
@@ -56,10 +62,14 @@ export const SecondRow = ({
         promises={promises}
         selectedUserName={selectedUserName}
       />
-      {!username && <CreatePostSection />}
+
+      {isOwnProfile && <CreatePostSection />}
+
       <div className='p-4'>
         <Tabs
-          defaultActiveKey='1'
+          defaultActiveKey='public'
+          activeKey={activeTab}
+          onChange={(key) => setActiveTab(key)}
           items={tabItems}
         />
       </div>

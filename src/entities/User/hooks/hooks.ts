@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/entities/Auth/store/store";
 import { appLocalStorageKey } from "@/shared/config/appLocalStorage/appLocalStorage";
 import { appLocalStorage } from "@/shared/utils/appLocalStorage/appLocalStorage";
@@ -52,8 +52,14 @@ export const useGetProfileByUserName = (
 };
 
 export const useUpdateProfile = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ["useUpdateProfile"],
     mutationFn: updateProfile,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["useGetProfileByUserName"],
+      });
+    },
   });
 };

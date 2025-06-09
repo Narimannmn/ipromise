@@ -1,23 +1,24 @@
-import { Card, Typography } from "antd";
+import { Card, Empty, Typography } from "antd";
+import { useNotificationStore } from "@/entities/Notification/store/notificationStore";
 
 export const NotificationsBlock = () => {
-  return (
-    <Card>
-      <div className='flex flex-col gap-2'>
-        <div>
-          <Typography.Text>
-            Two days for writing post for “Watch french series each week”
-            StepPoint
-          </Typography.Text>
-        </div>
+  const { notifications } = useNotificationStore();
 
-        <div>
-          <Typography.Text>
-            Two days for writing post for “Watch french series each week”
-            StepPoint
-          </Typography.Text>
+  const latestNotifications = notifications?.slice(-3).reverse();
+
+  return (
+    <Card title='Notifications'>
+      {latestNotifications && latestNotifications.length > 0 ? (
+        <div className='flex flex-col gap-2'>
+          {latestNotifications.map((notification) => (
+            <div key={notification.id}>
+              <Typography.Text>{notification.message}</Typography.Text>
+            </div>
+          ))}
         </div>
-      </div>
+      ) : (
+        <Empty description='No notifications' />
+      )}
     </Card>
   );
 };

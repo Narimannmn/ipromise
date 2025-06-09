@@ -1,20 +1,11 @@
-import {
-  Badge,
-  Button,
-  Card,
-  Empty,
-  Modal,
-  Progress,
-  Spin,
-  Typography,
-} from "antd";
+import { Button, Card, Empty, Modal, Progress, Spin, Typography } from "antd";
 import { useState } from "react";
 import { AiFillOpenAI } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "@/entities/Auth/store/store";
 import { useGetPromisePrediction } from "@/entities/Promises/hooks/hooks";
 import { IPromise } from "@/entities/Promises/shemas/shemas";
 import { User } from "@/entities/User/schemas/schemas";
+import { useIsOwnProfile } from "@/shared/hooks/useIsOwnProfile";
 import { ID } from "@/shared/schemas";
 import { PromiseProgressCard } from "../PromiseProgressCard/PromiseProgressCard";
 
@@ -28,6 +19,7 @@ export const PromiseProgressCardSection = ({
 }: PromiseProgressCardSectionProps) => {
   if (!promises) return null;
   if (promises.length == 0) return <Empty />;
+  const isOwnProfile = useIsOwnProfile();
 
   const [selectedPromise, setSelectedPromise] = useState<ID | undefined>(
     undefined,
@@ -37,9 +29,6 @@ export const PromiseProgressCardSection = ({
   const { data: prediction } = useGetPromisePrediction(
     selectedPromise || undefined,
   );
-
-  const { user } = useAuthStore();
-
   const navigate = useNavigate();
   const displayedPromises = promises?.slice(0, 4) ?? [];
 
@@ -61,23 +50,14 @@ export const PromiseProgressCardSection = ({
                 height: "100%",
               }}
             >
-              {selectedUserName == user?.username ? (
-                <Badge
-                  count={
-                    <AiFillOpenAI
-                      style={{ color: "#f5222d" }}
-                      onClick={() => {
-                        setSelectedPromise(promise.id);
-                        setIsModalOpen(true);
-                      }}
-                    />
-                  }
-                >
-                  <PromiseProgressCard promise={promise} />
-                </Badge>
-              ) : (
-                <PromiseProgressCard promise={promise} />
-              )}
+              <PromiseProgressCard
+                promise={promise}
+                isOwnPage={isOwnProfile}
+                onClick={() => {
+                  setSelectedPromise(promise.id);
+                  setIsModalOpen(true);
+                }}
+              />
             </div>
           ))}
         </div>

@@ -22,6 +22,7 @@ interface PromiseCreateFormProps {
 
 type MicrotaskForm = {
   Title: string;
+  PostCount: number;
 };
 
 export type PromiseCreateFormFields = {
@@ -29,7 +30,6 @@ export type PromiseCreateFormFields = {
   Description?: string;
   Deadline: dayjs.Dayjs;
   IsPrivate: boolean;
-  postNumber?: number;
   Microtasks: MicrotaskForm[];
 };
 
@@ -86,31 +86,10 @@ export const PromiseCreateForm: FC<PromiseCreateFormProps> = ({
       </Row>
 
       <Form.Item
-        label={<strong>Number of posts to complete Promise</strong>}
-        name='postNumber'
-        valuePropName='value' // ✅ This ensures correct binding
-        rules={[
-          { required: true, message: "Please enter number of posts" },
-          {
-            type: "number",
-            min: 1,
-            max: 30,
-            message: "Must be between 1 and 30",
-          },
-        ]}
-      >
-        <InputNumber
-          min={1}
-          max={30}
-          style={{ width: "100%" }}
-        />
-      </Form.Item>
-
-      <Form.Item
         label={
           <strong>
             StepPoints&nbsp;
-            <Tooltip title='Small task description'>
+            <Tooltip title='Each small step with required post count'>
               <QuestionCircleOutlined />
             </Tooltip>
           </strong>
@@ -120,45 +99,60 @@ export const PromiseCreateForm: FC<PromiseCreateFormProps> = ({
           {(fields, { add, remove }) => (
             <>
               {fields.map(({ key, name, ...restField }) => (
-                <Form.Item
+                <Row
                   key={key}
+                  gutter={8}
+                  align='middle'
                   style={{ marginBottom: 8 }}
-                  required={false}
                 >
-                  <Form.Item
-                    {...restField}
-                    name={[name, "Title"]}
-                    noStyle
-                    rules={[{ required: true, message: "Step point required" }]}
-                  >
-                    <Input
-                      placeholder='StepPoints'
-                      suffix={
-                        <Button
-                          type='text'
-                          danger
-                          size='small'
-                          onClick={() => {
-                            const currentFields =
-                              form.getFieldValue("Microtasks");
-                            if (currentFields.length > 1) {
-                              remove(name);
-                            }
-                          }}
-                        >
-                          <AiOutlineDelete style={{ color: "red" }} />
-                        </Button>
-                      }
+                  <Col flex='auto'>
+                    <Form.Item
+                      {...restField}
+                      name={[name, "Title"]}
+                      rules={[
+                        { required: true, message: "StepPoint required" },
+                      ]}
+                      style={{ marginBottom: 0 }}
+                    >
+                      <Input placeholder='StepPoint title' />
+                    </Form.Item>
+                  </Col>
+
+                  <Col span={6}>
+                    <Form.Item
+                      {...restField}
+                      name={[name, "PostCount"]}
+                      rules={[{ required: true, message: "Required" }]}
+                      style={{ marginBottom: 0 }}
+                    >
+                      <InputNumber
+                        min={1}
+                        max={30}
+                        style={{ width: "100%" }}
+                        placeholder='Posts number'
+                      />
+                    </Form.Item>
+                  </Col>
+
+                  <Col>
+                    <Button
+                      type='text'
+                      danger
+                      icon={<AiOutlineDelete />}
+                      onClick={() => {
+                        const current = form.getFieldValue("Microtasks");
+                        if (current.length > 1) remove(name);
+                      }}
                     />
-                  </Form.Item>
-                </Form.Item>
+                  </Col>
+                </Row>
               ))}
               <Button
                 type='link'
                 onClick={() => add()}
                 icon={<PlusOutlined />}
               >
-                Add new one
+                Add StepPoint
               </Button>
             </>
           )}

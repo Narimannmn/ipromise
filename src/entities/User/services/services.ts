@@ -44,8 +44,10 @@ export const updateProfile = (payload: UserUpdate) => {
   const formData = new FormData();
 
   formData.append("username", payload.username);
-  formData.append("promise_id", payload.bio);
-  formData.append("avatar_url", payload.avatar_url);
+  formData.append("bio", payload.bio);
+  if (payload.avatar_url) {
+    formData.append("avatar", payload.avatar_url);
+  }
 
   return instance.patch("profile/me", formData, {
     headers: {

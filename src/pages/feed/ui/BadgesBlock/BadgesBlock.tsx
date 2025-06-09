@@ -1,4 +1,4 @@
-import { Empty, Progress, Typography } from "antd";
+import { Avatar, Empty, Tooltip } from "antd";
 import { Badge } from "@/entities/Badges/schemas/schemas";
 
 export interface BadgesBlockProps {
@@ -7,21 +7,42 @@ export interface BadgesBlockProps {
 export const BadgesBlock = ({ badges }: BadgesBlockProps) => {
   return (
     <section className='flex flex-col gap-1'>
-      <Typography.Text className='font-medium'>Achievments</Typography.Text>
       <div className='flex flex-col gap-1'>
         {badges?.length == 0 && <Empty />}
-        {badges?.map((badge) => (
-          <div
-            className='flex flex-col'
-            key={badge.id}
+        <div style={{ display: "flex", gap: 12 }}>
+          <Avatar.Group
+            max={{
+              count: 5,
+              style: {
+                color: "#f56a00",
+                backgroundColor: "#fde3cf",
+                cursor: "pointer",
+              },
+              popover: { trigger: "click" },
+            }}
           >
-            <Typography.Text>{badge.title}</Typography.Text>
-            <Progress
-              percent={30}
-              showInfo={false}
-            />
-          </div>
-        ))}
+            {badges?.map((badge) => (
+              <Tooltip
+                key={badge.id}
+                title={
+                  <div>
+                    <strong>{badge.title}</strong>
+                    <br />
+                    {badge.description}
+                  </div>
+                }
+                placement='top'
+              >
+                <Avatar
+                  shape='circle'
+                  size='large'
+                  src={badge.icon_url}
+                  alt={badge.title}
+                />
+              </Tooltip>
+            ))}
+          </Avatar.Group>
+        </div>
       </div>
     </section>
   );

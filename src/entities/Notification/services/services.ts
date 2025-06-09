@@ -17,7 +17,7 @@ export const getNotifications = async () => {
     });
 };
 export const markAsRead = (id: ID) => {
-  return instance.post(`/notifications/${id}/read`, [`${id}`], {
+  return instance.post("/notifications/read", [`${id}`], {
     headers: {
       Authorization: `Bearer ${appLocalStorage.getItem(appLocalStorageKey.accessToken)}`,
     },

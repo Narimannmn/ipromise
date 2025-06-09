@@ -52,7 +52,10 @@ export const SharedFriends = () => {
                 <div>
                   <Avatar
                     alt='userAvatar'
-                    src={friend.avatar_url}
+                    src={
+                      friend.avatar_url ||
+                      `https://ui-avatars.com/api/?name=${friend.username?.charAt(0).toUpperCase()}&background=0D8ABC&color=fff&size=128`
+                    }
                     size={"default"}
                   />
                 </div>
