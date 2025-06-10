@@ -21,7 +21,9 @@ export const SecondRow = () => {
       <PostsFeed
         posts={posts}
         onLoadMore={() => {
-          if (hasNextPage && !isFetchingNextPage) fetchNextPage();
+          if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+          }
         }}
       />
     </Flex>

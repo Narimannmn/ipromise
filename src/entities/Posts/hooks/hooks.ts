@@ -5,6 +5,7 @@ import {
   createComment,
   createCommentProps,
   createPost,
+  deletePost,
   getFeed,
   getUserPostsFeed,
   LikePost,
@@ -28,7 +29,11 @@ export const useLikePost = () => {
     mutationFn: (id: ID) => LikePost(id),
   });
 };
-
+export const useDeletePost = () => {
+  return useMutation({
+    mutationFn: (id: ID) => deletePost(id),
+  });
+};
 export const useUnlikePost = () => {
   return useMutation({
     mutationFn: (id: ID) => UnLikePost(id),

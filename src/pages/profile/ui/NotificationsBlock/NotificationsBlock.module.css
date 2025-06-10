@@ -1,0 +1,19 @@
+/* components/NotificationDrawer.module.css */
+
+.notificationItem {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  align-items: flex-start;
+}
+.unreadNotification {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  align-items: flex-end;
+}
+.date {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+}

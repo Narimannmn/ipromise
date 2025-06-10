@@ -37,7 +37,10 @@ export const PostCard = ({ post }: PostCardProps) => {
   return (
     <ConfigProvider theme={theme}>
       <div className='rounded-2xl border border-[#d9d9d9] bg-white'>
-        <PostTitle post={shownPost} />
+        <PostTitle
+          post={shownPost}
+          onRefresh={refreshPost}
+        />
         <PostBody post={shownPost} />
         <PostFooter
           post={shownPost}

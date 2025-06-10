@@ -166,3 +166,10 @@ export const getPostById = async (postId: string) => {
 
   return response.data.data;
 };
+export const deletePost = async (id: ID) => {
+  return instance.delete(`posts/${id}`, {
+    headers: {
+      Authorization: `Bearer ${appLocalStorage.getItem(appLocalStorageKey.accessToken)}`,
+    },
+  });
+};
