@@ -1,3 +1,11 @@
+import {
+  ClockCircleOutlined,
+  CommentOutlined,
+  LikeOutlined,
+  MessageOutlined,
+  SafetyCertificateOutlined,
+  UserAddOutlined,
+} from "@ant-design/icons";
 import { notification } from "antd";
 import { ReactNode, useEffect, useRef } from "react";
 import { useAuthStore } from "@/entities/Auth/store/store";
@@ -35,19 +43,44 @@ export const WebSocketProvider = ({ children }: Props) => {
     ws.onmessage = async (event) => {
       try {
         const data = JSON.parse(event.data);
+
         if ("id" in data) {
           addNotification(data);
 
+          const typeToEmoji: Record<string, string> = {
+            like: "❤️",
+            follow_request: "👥",
+            badge_assigned: "🏅",
+            deadline_reminder: "⏰",
+            post_reply: "📝",
+            comment_reply: "💬",
+          };
+
+          const typeToIcon: Record<string, JSX.Element> = {
+            like: <LikeOutlined />,
+            follow_request: <UserAddOutlined />,
+            badge_assigned: <SafetyCertificateOutlined />,
+            deadline_reminder: <ClockCircleOutlined />,
+            post_reply: <MessageOutlined />,
+            comment_reply: <CommentOutlined />,
+          };
+
+          const emoji = typeToEmoji[data.type] || "🔔";
+          const icon = typeToIcon[data.type] || "";
+
           if (Notification.permission === "granted") {
             if (document.hidden) {
-              new Notification("New Notification", {
+              // Native notification (icon must be string path)
+              new Notification(`${emoji} New Notification`, {
                 body: data.message,
-                icon: "/logo.svg",
+                icon: "/logo.png",
               });
             } else {
+              // Ant Design UI toast with React icon
               notification.open({
-                message: "New Notification",
+                message: `${emoji} New Notification`,
                 description: data.message,
+                icon: icon,
               });
             }
           } else if (Notification.permission === "default") {
@@ -59,12 +92,12 @@ export const WebSocketProvider = ({ children }: Props) => {
       }
     };
 
-    ws.onclose = () => {
-      console.error({ message: "❌ WebSocket closed" });
+    ws.onerror = (err) => {
+      console.error("🚨 WebSocket error:", err);
     };
 
-    ws.onerror = (err) => {
-      console.error({ message: `🚨 WebSocket error: ${err}` });
+    ws.onclose = (event) => {
+      console.warn("❌ WebSocket closed", event);
     };
 
     return () => {

@@ -38,7 +38,7 @@ export const FriendsPage = () => {
       ];
 
   return (
-    <section className='w-full h-screen flex gap-6'>
+    <section className='w-full flex gap-6 py-[24px] px-[100px] overflow-hidden'>
       <div className='flex-3 w-3/4 p-4 bg-white rounded-2xl'>
         <Tabs
           defaultActiveKey='1'

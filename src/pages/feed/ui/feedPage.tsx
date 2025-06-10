@@ -1,29 +1,25 @@
-import { Flex } from "antd";
+import styles from "./FeedPage.module.css";
 import { FirstRow } from "./FirstRow/FirstRow";
 import { SecondRow } from "./SecondRow/SecondRow";
 import { ThirdRow } from "./ThirdRow/ThirdRow";
 
 export const feedPage = () => {
   return (
-    <Flex
-      gap={24}
-      justify='space-between'
-    >
-      <div
-        style={{ flex: 1 }}
-        className='w-[350px]'
-      >
+    <div className={styles.feedContainer}>
+      {/* Left Sidebar - Fixed */}
+      <div className={styles.leftSidebar}>
         <FirstRow />
       </div>
-      <div style={{ flex: 2 }}>
+
+      {/* Main Content - Scrollable */}
+      <div className={styles.mainContent}>
         <SecondRow />
       </div>
-      <div
-        style={{ flex: 1 }}
-        className='w-[350px]'
-      >
+
+      {/* Right Sidebar - Fixed */}
+      <div className={styles.rightSidebar}>
         <ThirdRow />
       </div>
-    </Flex>
+    </div>
   );
 };

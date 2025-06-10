@@ -1,4 +1,4 @@
-import { Card, ConfigProvider, Flex } from "antd";
+import { Card, ConfigProvider } from "antd";
 import { useAuthStore } from "@/entities/Auth/store/store";
 import { useGetBadgesByUsername } from "@/entities/Badges/hooks/hooks";
 import { BadgesCard } from "@/shared/components/BadgesCard/BadgesCard";
@@ -11,11 +11,7 @@ export const FirstRow = () => {
     useGetBadgesByUsername(user?.username);
 
   return (
-    <Flex
-      vertical
-      gap={16}
-      className='w-[350px]'
-    >
+    <div className='flex flex-col gap-4'>
       <ConfigProvider theme={ProfileAvatarCardTheme}>
         <Card title={<UserAvatar user={user || null} />}>
           <div style={{ wordBreak: "break-word" }}>
@@ -27,6 +23,6 @@ export const FirstRow = () => {
         badges={achievements}
         isLoading={achievementsLoading}
       />
-    </Flex>
+    </div>
   );
 };

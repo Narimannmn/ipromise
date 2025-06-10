@@ -1,5 +1,4 @@
 import { Avatar, Dropdown, notification, Skeleton } from "antd";
-import { AiOutlineUser } from "react-icons/ai";
 import { FaRegUserCircle } from "react-icons/fa";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/entities/Auth/store/store";

@@ -19,7 +19,7 @@ export const useGetUserMe = () => {
   const logout = useAuthStore((state) => state.logout);
 
   const query = useQuery({
-    queryKey: ["userMe"],
+    queryKey: ["userMe", accessToken],
     queryFn: async () => {
       if (accessToken == null) {
         logout();
@@ -30,6 +30,7 @@ export const useGetUserMe = () => {
       return user;
     },
     staleTime,
+    enabled: !!accessToken,
   });
 
   return query;

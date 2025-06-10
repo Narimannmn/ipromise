@@ -1,16 +1,11 @@
-import { Flex } from "antd";
 import { NotificationsBlock } from "@/pages/profile/ui/NotificationsBlock/NotificationsBlock";
 import { SharedFriends } from "@/shared/components/SharedFriends/SharedFriends";
 
 export const ThirdRow = () => {
   return (
-    <Flex
-      vertical
-      gap={16}
-      className='w-[350px]'
-    >
+    <div className='flex flex-col gap-4'>
       <NotificationsBlock />
       <SharedFriends />
-    </Flex>
+    </div>
   );
 };

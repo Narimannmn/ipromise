@@ -1,0 +1,28 @@
+.feedContainer {
+  display: grid;
+  grid-template-columns: 350px 1fr 350px;
+  gap: 24px;
+  padding: 24px 100px;
+  align-items: start;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.leftSidebar,
+.rightSidebar {
+  position: sticky;
+  top: 0;
+  overflow: visible;
+  height: fit-content; /* Let content determine height */
+}
+
+.sticky {
+  position: sticky;
+  top: 24px;
+  height: fit-content; /* Important: don't constrain height */
+}
+
+.mainContent {
+  justify-self: center;
+  width: 100%;
+}

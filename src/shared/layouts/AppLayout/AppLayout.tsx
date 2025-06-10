@@ -6,7 +6,7 @@ import { WebSocketProvider } from "@/widgets/Head/WebSocketProvider/WebSocketPro
 
 export const AppLayout = ({ children }: PropsWithChildren) => {
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout style={{ height: "100vh", overflow: "hidden" }}>
       {/* Main Content */}
       <WebSocketProvider>
         <Head />
@@ -14,8 +14,8 @@ export const AppLayout = ({ children }: PropsWithChildren) => {
       <Content
         style={{
           background: "#F5F5F5",
-          padding: "24px 100px",
           overflow: "hidden",
+          height: "calc(100vh - 48px)",
         }}
       >
         {children}

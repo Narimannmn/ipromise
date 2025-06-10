@@ -1,3 +1,4 @@
+import { QueryClient } from "@tanstack/react-query";
 import { jwtDecode } from "jwt-decode";
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
@@ -29,6 +30,8 @@ export interface AuthActions {
   logout: () => void;
 }
 
+export const queryClient = new QueryClient();
+
 export const useAuthStore = create<AuthState & AuthActions>()(
   devtools(
     immer((set) => ({
@@ -41,6 +44,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       },
       setTokens: (tokens) => {
         set((state) => {
+          state.user = null;
           state.tokens = tokens;
         });
         appLocalStorage.setItem(
@@ -83,12 +87,20 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       },
       logout: () => {
         appSessionStorage.unvalidateToken();
+        appLocalStorage.removeItem(appLocalStorageKey.accessToken);
+        appLocalStorage.removeItem(appLocalStorageKey.refreshToken);
+
+        // Clear all React Query caches
+        queryClient.clear();
+
         set((state) => {
           state.user = null;
           state.tokens = null;
         });
-        appLocalStorage.removeItem(appLocalStorageKey.accessToken);
-        appLocalStorage.removeItem(appLocalStorageKey.refreshToken);
+        set(() => ({
+          user: null,
+          tokens: null,
+        }));
       },
     })),
   ),
