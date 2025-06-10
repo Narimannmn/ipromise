@@ -13,6 +13,7 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuthStore } from "@/entities/Auth/store/store";
 import { useGetPromisesByUsername } from "@/entities/Promises/hooks/hooks";
+import { useIsOwnProfile } from "@/shared/hooks/useIsOwnProfile";
 import { privateRoutesMap } from "@/shared/navigation";
 import { PromiseCrudFormTheme } from "../data/data";
 import { usePromisePageStore } from "../stores/store";
@@ -24,6 +25,7 @@ export const PromisesPage = () => {
   const { username } = useParams<{ username: string }>();
   const { user } = useAuthStore();
   const selectedUserName = username || user?.username;
+  const isMyProfile = useIsOwnProfile();
 
   const navigate = useNavigate();
   const { setIsCreateModal, setSelectPromise, setIsEditModal } =
@@ -50,14 +52,16 @@ export const PromisesPage = () => {
           <div>
             <Typography.Title level={4}>Promises</Typography.Title>
           </div>
-          <Button
-            type='primary'
-            icon={<AiOutlinePlusCircle size={14} />}
-            onClick={() => setIsCreateModal(true)}
-            id='create-promise-button'
-          >
-            Create new promise
-          </Button>
+          {isMyProfile && (
+            <Button
+              type='primary'
+              icon={<AiOutlinePlusCircle size={14} />}
+              onClick={() => setIsCreateModal(true)}
+              id='create-promise-button'
+            >
+              Create new promise
+            </Button>
+          )}
         </div>
         <div
           className='flex flex-wrap'
@@ -90,15 +94,17 @@ export const PromisesPage = () => {
               <Card
                 title={promise.title}
                 extra={
-                  <SquarePenIcon
-                    size={20}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                      if (!promise) return;
-                      setSelectPromise(promise);
-                      setIsEditModal(true);
-                    }}
-                  />
+                  isMyProfile ? (
+                    <SquarePenIcon
+                      size={20}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        if (!promise) return;
+                        setSelectPromise(promise);
+                        setIsEditModal(true);
+                      }}
+                    />
+                  ) : null
                 }
                 key={promise.id}
                 style={{
