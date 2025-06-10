@@ -22,7 +22,10 @@ export const PromiseProgressCard = ({
       }}
     >
       <div className='flex flex-col gap-2 h-full'>
-        <div className='flex gap-4 align-middle items-center justify-between'>
+        <div
+          className='flex gap-4 align-middle items-center justify-between'
+          id='promises-summary'
+        >
           <Typography.Text>{promise.title}</Typography.Text>
 
           {isOwnPage ? (
